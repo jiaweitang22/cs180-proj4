@@ -1,0 +1,244 @@
+{
+  "assets": [
+    {
+      "file": "set1-source-0.webp",
+      "source": "images/set1_left.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "set1-source-1.webp",
+      "source": "images/set1_right.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "set1-correspondences-0.webp",
+      "source": "outputs/set1_0_points.png",
+      "size": [
+        1250,
+        831
+      ]
+    },
+    {
+      "file": "set1-source-0.webp",
+      "source": "images/set1_left.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "set1-source-1.webp",
+      "source": "images/set1_right.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "set1-mosaic.webp",
+      "source": "outputs/set1_mosaic.jpg",
+      "size": [
+        1796,
+        2000
+      ]
+    },
+    {
+      "file": "set2-source-0.webp",
+      "source": "images/set2_left.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "set2-source-1.webp",
+      "source": "images/set2_right.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "set2-correspondences-0.webp",
+      "source": "outputs/set2_0_points.png",
+      "size": [
+        1250,
+        831
+      ]
+    },
+    {
+      "file": "set2-source-0.webp",
+      "source": "images/set2_left.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "set2-source-1.webp",
+      "source": "images/set2_right.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "set2-mosaic.webp",
+      "source": "outputs/set2_mosaic.jpg",
+      "size": [
+        1748,
+        2000
+      ]
+    },
+    {
+      "file": "set3-source-0.webp",
+      "source": "images/set3_left.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "set3-source-1.webp",
+      "source": "images/set3_right.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "set3-correspondences-0.webp",
+      "source": "outputs/set3_0_points.png",
+      "size": [
+        1250,
+        831
+      ]
+    },
+    {
+      "file": "set3-source-0.webp",
+      "source": "images/set3_left.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "set3-source-1.webp",
+      "source": "images/set3_right.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "set3-mosaic.webp",
+      "source": "outputs/set3_mosaic.jpg",
+      "size": [
+        1665,
+        2000
+      ]
+    },
+    {
+      "file": "rect1-original.webp",
+      "source": "images/rect1.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "rect1-nearest.webp",
+      "source": "outputs/rect1_rectified_nearest.png",
+      "size": [
+        1481,
+        2000
+      ]
+    },
+    {
+      "file": "rect1-bilinear.webp",
+      "source": "outputs/rect1_rectified_bilinear.png",
+      "size": [
+        1481,
+        2000
+      ]
+    },
+    {
+      "file": "rect1-zoom.webp",
+      "source": "outputs/rect1_zoom.png",
+      "size": [
+        1425,
+        695
+      ]
+    },
+    {
+      "file": "rect2-original.webp",
+      "source": "images/rect2.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "rect2-nearest.webp",
+      "source": "outputs/rect2_rectified_nearest.png",
+      "size": [
+        1524,
+        2000
+      ]
+    },
+    {
+      "file": "rect2-bilinear.webp",
+      "source": "outputs/rect2_rectified_bilinear.png",
+      "size": [
+        1524,
+        2000
+      ]
+    },
+    {
+      "file": "rect2-zoom.webp",
+      "source": "outputs/rect2_zoom.png",
+      "size": [
+        1425,
+        695
+      ]
+    },
+    {
+      "file": "rect3-original.webp",
+      "source": "images/rect3.jpg",
+      "size": [
+        1200,
+        1600
+      ]
+    },
+    {
+      "file": "rect3-nearest.webp",
+      "source": "outputs/rect3_rectified_nearest.png",
+      "size": [
+        1625,
+        2000
+      ]
+    },
+    {
+      "file": "rect3-bilinear.webp",
+      "source": "outputs/rect3_rectified_bilinear.png",
+      "size": [
+        1625,
+        2000
+      ]
+    },
+    {
+      "file": "rect3-zoom.webp",
+      "source": "outputs/rect3_zoom.png",
+      "size": [
+        1425,
+        695
+      ]
+    }
+  ]
+}

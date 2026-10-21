@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jiawei Tang">
+<meta name="dcterms.date" content="2026-10-21">
+
+<title>CS 180 Project 4: Image Warping and Mosaicing – Jiawei’s Projects</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-6925463af6acf52897ebc0c268b63afa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Jiawei’s Projects</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://jiaweitang22.github.io/"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://jiaweitang22.github.io/cs180-proj0/"> 
+<span class="menu-text">CS 180 Project 0</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://jiaweitang22.github.io/cs180-proj1/"> 
+<span class="menu-text">CS 180 Project 1</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://jiaweitang22.github.io/cs180-proj2/"> 
+<span class="menu-text">CS 180 Project 2</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://jiaweitang22.github.io/cs180-proj3/"> 
+<span class="menu-text">CS 180 Project 3</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://jiaweitang22.github.io/cs180-proj4/"> 
+<span class="menu-text">CS 180 Project 4</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/jiaweitang22/"> <i class="bi bi-github" role="img" aria-label="GitHub profile">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/jiaweitang22/"> <i class="bi bi-linkedin" role="img" aria-label="LinkedIn profile">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#part-a-image-warping-and-mosaicing" id="toc-part-a-image-warping-and-mosaicing" class="nav-link active" data-scroll-target="#part-a-image-warping-and-mosaicing">Part A: Image Warping and Mosaicing</a>
+  <ul class="collapse">
+  <li><a href="#shooting" id="toc-shooting" class="nav-link" data-scroll-target="#shooting">A.1 Shooting the Pictures</a></li>
+  <li><a href="#homographies" id="toc-homographies" class="nav-link" data-scroll-target="#homographies">A.2 Recovering Homographies</a></li>
+  <li><a href="#warping" id="toc-warping" class="nav-link" data-scroll-target="#warping">A.3 Warping the Images</a>
+  <ul class="collapse">
+  <li><a href="#rectification" id="toc-rectification" class="nav-link" data-scroll-target="#rectification">Rectification</a></li>
+  <li><a href="#interpolation-comparison" id="toc-interpolation-comparison" class="nav-link" data-scroll-target="#interpolation-comparison">Nearest Neighbor vs.&nbsp;Bilinear</a></li>
+  </ul></li>
+  <li><a href="#mosaics" id="toc-mosaics" class="nav-link" data-scroll-target="#mosaics">A.4 Blending into a Mosaic</a></li>
+  </ul></li>
+  <li><a href="#part-b" id="toc-part-b" class="nav-link" data-scroll-target="#part-b">Part B</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">CS 180 Project 4: Image Warping and Mosaicing</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jiawei Tang </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 21, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="part-a-image-warping-and-mosaicing" class="level1">
+<h1>Part A: Image Warping and Mosaicing</h1>
+<section id="shooting" class="level2">
+<h2 class="anchored" data-anchor-id="shooting">A.1 Shooting the Pictures</h2>
+<p>I shot all three sets in Cupertino on October 21, 2026, using the iPhone 17 Pro’s 1× main camera (6.8 mm, 24 mm equivalent). I avoided the 0.5× ultrawide because of its barrel distortion. Each set is two portrait photos. Between the shots I kept the phone in one spot and turned it, so the center of projection stays fixed and the two photos are related by a homography.</p>
+<ul>
+<li><strong>Set 1:</strong> the Visitor Center sign at 10600 N Tantau Avenue. The camera turned about 19° between shots, and the left photo covers 64% of the right one.</li>
+<li><strong>Set 2:</strong> a path through olive trees next to a black louvered building. About 19° apart, 65% overlap.</li>
+<li><strong>Set 3:</strong> a walkway between two apartment buildings. About 17° apart, 69% overlap.</li>
+</ul>
+<p>In Sets 2 and 3 both photos have the same exposure. In Set 1 the exposure changed by about 20% between shots, which the blending in A.4 smooths over.</p>
+<p><strong>Set 1: Visitor Center sign</strong></p>
+<div class="result-grid cols-2">
+<figure class="figure">
+<a href="assets/set1-source-0.webp" target="_blank" rel="noopener"><img src="assets/set1-source-0.webp" width="1200" height="1600" alt="Left: road and crosswalk" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Left: road and crosswalk
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/set1-source-1.webp" target="_blank" rel="noopener"><img src="assets/set1-source-1.webp" width="1200" height="1600" alt="Right (reference): sign and olive tree at the corner" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Right (reference): sign and olive tree at the corner
+</figcaption>
+</figure>
+</div>
+<p><strong>Set 2: Olive tree path</strong></p>
+<div class="result-grid cols-2">
+<figure class="figure">
+<a href="assets/set2-source-0.webp" target="_blank" rel="noopener"><img src="assets/set2-source-0.webp" width="1200" height="1600" alt="Left: path through the olive trees" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Left: path through the olive trees
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/set2-source-1.webp" target="_blank" rel="noopener"><img src="assets/set2-source-1.webp" width="1200" height="1600" alt="Right (reference): olive trees and black louvered building" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Right (reference): olive trees and black louvered building
+</figcaption>
+</figure>
+</div>
+<p><strong>Set 3: Apartment walkway</strong></p>
+<div class="result-grid cols-2">
+<figure class="figure">
+<a href="assets/set3-source-0.webp" target="_blank" rel="noopener"><img src="assets/set3-source-0.webp" width="1200" height="1600" alt="Left: left building and walkway" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Left: left building and walkway
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/set3-source-1.webp" target="_blank" rel="noopener"><img src="assets/set3-source-1.webp" width="1200" height="1600" alt="Right (reference): walkway and right building" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Right (reference): walkway and right building
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="homographies" class="level2">
+<h2 class="anchored" data-anchor-id="homographies">A.2 Recovering Homographies</h2>
+<p>A homography maps a point <span class="math inline">\((x, y)\)</span> in one image to <span class="math inline">\((x', y')\)</span> in another, up to scale:</p>
+<p><span class="math display">\[
+\begin{bmatrix} w x' \\ w y' \\ w \end{bmatrix}
+=
+\begin{bmatrix} a &amp; b &amp; c \\ d &amp; e &amp; f \\ g &amp; h &amp; 1 \end{bmatrix}
+\begin{bmatrix} x \\ y \\ 1 \end{bmatrix}.
+\]</span></p>
+<p>Fixing the bottom-right entry to 1 leaves 8 unknowns. Dividing out <span class="math inline">\(w\)</span> and multiplying through by the denominator gives two equations per correspondence that are linear in the unknowns:</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+x &amp; y &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -x x' &amp; -y x' \\
+0 &amp; 0 &amp; 0 &amp; x &amp; y &amp; 1 &amp; -x y' &amp; -y y'
+\end{bmatrix}
+\mathbf h
+=
+\begin{bmatrix} x' \\ y' \end{bmatrix},
+\qquad
+\mathbf h = (a, b, c, d, e, f, g, h)^\top.
+\]</span></p>
+<p>Stacking <span class="math inline">\(n\)</span> correspondences gives a <span class="math inline">\(2n \times 8\)</span> system <span class="math inline">\(A\mathbf h = \mathbf b\)</span>. Four points determine <span class="math inline">\(H\)</span> exactly, but small errors in the points move it a lot, so I use 15 correspondences per pair and solve the overdetermined system with least squares:</p>
+<p><span class="math display">\[
+\hat{\mathbf h} = \arg\min_{\mathbf h} \lVert A\mathbf h - \mathbf b \rVert^2 .
+\]</span></p>
+<p>I clicked 15 corresponding point pairs for each set, spread over the top, middle and bottom of the overlap, then estimated each homography using least squares. Coordinates are pixels in the 1200 × 1600 images.</p>
+<figure class="course-figure figure">
+<a href="assets/set1-correspondences-0.webp" target="_blank" rel="noopener"><img src="assets/set1-correspondences-0.webp" width="1250" height="831" alt="Set 1: numbered correspondences between the left photo and the reference" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 1: numbered correspondences between the left photo and the reference
+</figcaption>
+</figure>
+<figure class="course-figure figure">
+<a href="assets/set2-correspondences-0.webp" target="_blank" rel="noopener"><img src="assets/set2-correspondences-0.webp" width="1250" height="831" alt="Set 2: numbered correspondences between the left photo and the reference" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 2: numbered correspondences between the left photo and the reference
+</figcaption>
+</figure>
+<figure class="course-figure figure">
+<a href="assets/set3-correspondences-0.webp" target="_blank" rel="noopener"><img src="assets/set3-correspondences-0.webp" width="1250" height="831" alt="Set 3: numbered correspondences between the left photo and the reference" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 3: numbered correspondences between the left photo and the reference
+</figcaption>
+</figure>
+<p>For Set 1, mapping the left photo into the right (reference) photo’s frame, the first correspondence <span class="math inline">\((779.17, 693.52) \to (408.11, 672.04)\)</span>, the sign’s top-left corner, gives the first two rows of the system:</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+779.17 &amp; 693.52 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -317987.07 &amp; -283032.45 \\
+0 &amp; 0 &amp; 0 &amp; 779.17 &amp; 693.52 &amp; 1 &amp; -523633.41 &amp; -466073.18
+\end{bmatrix}
+\mathbf h
+=
+\begin{bmatrix} 408.11 \\ 672.04 \end{bmatrix}.
+\]</span></p>
+<p>All 15 correspondences give a <span class="math inline">\(30 \times 8\)</span> system. Solving it gives</p>
+<p><span class="math display">\[
+H^{(1)}_{\text{left}\to\text{right}} = \begin{bmatrix}
+1.5195 &amp; 0.0606 &amp; -683.89 \\
+0.2781 &amp; 1.3733 &amp; -267.93 \\
+4.060 \times 10^{-4} &amp; 3.359 \times 10^{-5} &amp; 1
+\end{bmatrix}.
+\]</span></p>
+<p>Sets 2 and 3 also use 15 correspondences each, a <span class="math inline">\(30 \times 8\)</span> system, and give</p>
+<p><span class="math display">\[
+H^{(2)}_{\text{left}\to\text{right}} = \begin{bmatrix}
+1.4675 &amp; 0.0114 &amp; -607.27 \\
+0.2970 &amp; 1.3179 &amp; -251.65 \\
+3.770 \times 10^{-4} &amp; 1.331 \times 10^{-5} &amp; 1
+\end{bmatrix},
+\quad
+H^{(3)}_{\text{left}\to\text{right}} = \begin{bmatrix}
+1.4589 &amp; 0.0014 &amp; -504.99 \\
+0.2993 &amp; 1.3310 &amp; -271.69 \\
+3.682 \times 10^{-4} &amp; 2.845 \times 10^{-5} &amp; 1
+\end{bmatrix}.
+\]</span></p>
+</section>
+<section id="warping" class="level2">
+<h2 class="anchored" data-anchor-id="warping">A.3 Warping the Images</h2>
+<p>I warp with inverse mapping. I first send the four image corners through <span class="math inline">\(H\)</span> to find the output bounding box. Then, for every output pixel, I map its center back through <span class="math inline">\(H^{-1}\)</span> and sample the input there, so the output has no holes. Pixel <span class="math inline">\((0, 0)\)</span> is the center of the top-left pixel. Output pixels whose source falls outside the input get alpha 0.</p>
+<ul>
+<li><strong>Nearest neighbor</strong> rounds the source location to the closest pixel.</li>
+<li><strong>Bilinear</strong> blends the four surrounding pixels. With <span class="math inline">\(x_0 = \lfloor x \rfloor\)</span>, <span class="math inline">\(\alpha = x - x_0\)</span> and likewise <span class="math inline">\(y_0\)</span>, <span class="math inline">\(\beta\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+I(x, y) = (1-\alpha)(1-\beta)\, I_{x_0, y_0} + \alpha(1-\beta)\, I_{x_0+1, y_0} + (1-\alpha)\beta\, I_{x_0, y_0+1} + \alpha\beta\, I_{x_0+1, y_0+1}.
+\]</span></p>
+<section id="rectification" class="level3">
+<h3 class="anchored" data-anchor-id="rectification">Rectification</h3>
+<p>To test the warp, I mark the four corners of an object I know is rectangular, in the order top-left, top-right, bottom-right, bottom-left, zooming in to place each to about a pixel. I map them to the corners of a rectangle with the object’s aspect ratio: 22 × 28 in for the poster frame and 8.5 × 11 in for the letter-size flyer. I don’t know the menu board’s size, so I estimated about 1.6 : 1 and checked that the lettering looks undistorted. Each rectified image is the whole photo warped into the plane of the object.</p>
+<p><strong>Rectification 1: poster frame</strong></p>
+<div class="result-grid cols-3">
+<figure class="figure">
+<a href="assets/rect1-original.webp" target="_blank" rel="noopener"><img src="assets/rect1-original.webp" width="1200" height="1600" alt="Original" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Original
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/rect1-nearest.webp" target="_blank" rel="noopener"><img src="assets/rect1-nearest.webp" width="1481" height="2000" alt="Rectified · nearest neighbor" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Rectified · nearest neighbor
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/rect1-bilinear.webp" target="_blank" rel="noopener"><img src="assets/rect1-bilinear.webp" width="1481" height="2000" alt="Rectified · bilinear" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Rectified · bilinear
+</figcaption>
+</figure>
+</div>
+<p><strong>Rectification 2: flyer</strong></p>
+<div class="result-grid cols-3">
+<figure class="figure">
+<a href="assets/rect2-original.webp" target="_blank" rel="noopener"><img src="assets/rect2-original.webp" width="1200" height="1600" alt="Original" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Original
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/rect2-nearest.webp" target="_blank" rel="noopener"><img src="assets/rect2-nearest.webp" width="1524" height="2000" alt="Rectified · nearest neighbor" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Rectified · nearest neighbor
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/rect2-bilinear.webp" target="_blank" rel="noopener"><img src="assets/rect2-bilinear.webp" width="1524" height="2000" alt="Rectified · bilinear" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Rectified · bilinear
+</figcaption>
+</figure>
+</div>
+<p><strong>Rectification 3: menu board</strong></p>
+<div class="result-grid cols-3">
+<figure class="figure">
+<a href="assets/rect3-original.webp" target="_blank" rel="noopener"><img src="assets/rect3-original.webp" width="1200" height="1600" alt="Original" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Original
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/rect3-nearest.webp" target="_blank" rel="noopener"><img src="assets/rect3-nearest.webp" width="1625" height="2000" alt="Rectified · nearest neighbor" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Rectified · nearest neighbor
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/rect3-bilinear.webp" target="_blank" rel="noopener"><img src="assets/rect3-bilinear.webp" width="1625" height="2000" alt="Rectified · bilinear" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Rectified · bilinear
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="interpolation-comparison" class="level3">
+<h3 class="anchored" data-anchor-id="interpolation-comparison">Nearest Neighbor vs.&nbsp;Bilinear</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Image</th>
+<th>Output size</th>
+<th>Nearest neighbor</th>
+<th>Bilinear</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Rectification 1: poster frame</td>
+<td>1543 × 2084</td>
+<td>0.25 s</td>
+<td>0.45 s</td>
+</tr>
+<tr class="even">
+<td>Rectification 2: flyer</td>
+<td>2580 × 3386</td>
+<td>0.65 s</td>
+<td>1.16 s</td>
+</tr>
+<tr class="odd">
+<td>Rectification 3: menu board</td>
+<td>1856 × 2284</td>
+<td>0.35 s</td>
+<td>0.75 s</td>
+</tr>
+</tbody>
+</table>
+<p>Bilinear takes about twice as long as nearest neighbor. It reads four source pixels per output pixel instead of one and blends them. Both are vectorized over the whole output, so even the 8.7-megapixel flyer result takes about a second.</p>
+<p>The crops below come from the middle of each rectified object. Where the warp enlarges the photo, nearest neighbor repeats source pixels, so letters get stair-stepped edges and thin strokes change thickness from letter to letter. This is clearest on the flyer and the menu, which are stretched to about 1.5 to 1.7 times their size in the photo. Bilinear keeps edges smooth, at the cost of slightly softer text. On the poster frame, which is mostly shrunk, the difference is smaller but still shows as jagged poster borders. Bilinear’s extra cost is small next to the quality gain, so I use it for the mosaics.</p>
+<figure class="course-figure figure">
+<a href="assets/rect1-zoom.webp" target="_blank" rel="noopener"><img src="assets/rect1-zoom.webp" width="1425" height="695" alt="Rectification 1: poster frame: nearest neighbor (left) vs. bilinear (right), zoomed" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Rectification 1: poster frame: nearest neighbor (left) vs.&nbsp;bilinear (right), zoomed
+</figcaption>
+</figure>
+<figure class="course-figure figure">
+<a href="assets/rect2-zoom.webp" target="_blank" rel="noopener"><img src="assets/rect2-zoom.webp" width="1425" height="695" alt="Rectification 2: flyer: nearest neighbor (left) vs. bilinear (right), zoomed" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Rectification 2: flyer: nearest neighbor (left) vs.&nbsp;bilinear (right), zoomed
+</figcaption>
+</figure>
+<figure class="course-figure figure">
+<a href="assets/rect3-zoom.webp" target="_blank" rel="noopener"><img src="assets/rect3-zoom.webp" width="1425" height="695" alt="Rectification 3: menu board: nearest neighbor (left) vs. bilinear (right), zoomed" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Rectification 3: menu board: nearest neighbor (left) vs.&nbsp;bilinear (right), zoomed
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="mosaics" class="level2">
+<h2 class="anchored" data-anchor-id="mosaics">A.4 Blending into a Mosaic</h2>
+<p>The right photo of each set is the reference, and I warp the left photo into its frame. To place every image on one canvas, I send each image’s corners through its homography and take the bounding box of all of them. Every image is then inverse-warped onto that same box, so they all land in one frame.</p>
+<p>Overwriting one image with the next leaves hard seams, so I blend instead. Each image gets a weight that is 1 at its center and falls linearly to 0 at its edges: the distance transform of the image’s footprint, normalized to a maximum of 1. The weight is warped along with the image.</p>
+<p>A plain weighted average of the overlapping images doubles any edge that is a few pixels off, which happens wherever the homography fits less well, such as the curb near the camera at the bottom of Set 3. So I blend in two bands, a 2-level Laplacian pyramid:</p>
+<ul>
+<li><strong>Low band:</strong> each warped image is blurred with a Gaussian (<span class="math inline">\(\sigma = 8\)</span> px). These are combined with the weighted average <span class="math inline">\(\sum_i w_i I_i / \sum_i w_i\)</span>, so brightness differences fade smoothly across the overlap.</li>
+<li><strong>High band:</strong> each image minus its blur. At each pixel it is taken from the single image with the largest weight, so edges are never doubled.</li>
+</ul>
+<p>The mosaic is the sum of the two bands.</p>
+<p><strong>Set 1: Visitor Center sign</strong></p>
+<div class="result-grid cols-2">
+<figure class="figure">
+<a href="assets/set1-source-0.webp" target="_blank" rel="noopener"><img src="assets/set1-source-0.webp" width="1200" height="1600" alt="Left: road and crosswalk" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Left: road and crosswalk
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/set1-source-1.webp" target="_blank" rel="noopener"><img src="assets/set1-source-1.webp" width="1200" height="1600" alt="Right (reference): sign and olive tree at the corner" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Right (reference): sign and olive tree at the corner
+</figcaption>
+</figure>
+</div>
+<figure class="course-figure figure">
+<a href="assets/set1-mosaic.webp" target="_blank" rel="noopener"><img src="assets/set1-mosaic.webp" width="1796" height="2000" alt="Set 1 mosaic" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 1 mosaic
+</figcaption>
+</figure>
+<p><strong>Set 2: Olive tree path</strong></p>
+<div class="result-grid cols-2">
+<figure class="figure">
+<a href="assets/set2-source-0.webp" target="_blank" rel="noopener"><img src="assets/set2-source-0.webp" width="1200" height="1600" alt="Left: path through the olive trees" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Left: path through the olive trees
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/set2-source-1.webp" target="_blank" rel="noopener"><img src="assets/set2-source-1.webp" width="1200" height="1600" alt="Right (reference): olive trees and black louvered building" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Right (reference): olive trees and black louvered building
+</figcaption>
+</figure>
+</div>
+<figure class="course-figure figure">
+<a href="assets/set2-mosaic.webp" target="_blank" rel="noopener"><img src="assets/set2-mosaic.webp" width="1748" height="2000" alt="Set 2 mosaic" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 2 mosaic
+</figcaption>
+</figure>
+<p><strong>Set 3: Apartment walkway</strong></p>
+<div class="result-grid cols-2">
+<figure class="figure">
+<a href="assets/set3-source-0.webp" target="_blank" rel="noopener"><img src="assets/set3-source-0.webp" width="1200" height="1600" alt="Left: left building and walkway" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Left: left building and walkway
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/set3-source-1.webp" target="_blank" rel="noopener"><img src="assets/set3-source-1.webp" width="1200" height="1600" alt="Right (reference): walkway and right building" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Right (reference): walkway and right building
+</figcaption>
+</figure>
+</div>
+<figure class="course-figure figure">
+<a href="assets/set3-mosaic.webp" target="_blank" rel="noopener"><img src="assets/set3-mosaic.webp" width="1665" height="2000" alt="Set 3 mosaic" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 3 mosaic
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="part-b" class="level1">
+<h1>Part B</h1>
+<p>[TODO: Part B is due Tuesday, Nov 10, 2026.]</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/jiaweitang22\.github\.io\/cs180-proj4\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Jiawei Tang · CS 180 · Fall 2026</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Built with Quarto</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
