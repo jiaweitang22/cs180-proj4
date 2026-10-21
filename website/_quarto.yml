@@ -1,0 +1,57 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - index.qmd
+  resources:
+    - assets/**
+
+website:
+  title: "Jiawei’s Projects"
+  site-url: https://jiaweitang22.github.io/cs180-proj4/
+  navbar:
+    background: light
+    left:
+      - href: https://jiaweitang22.github.io/
+        text: Home
+      - href: https://jiaweitang22.github.io/cs180-proj0/
+        text: CS 180 Project 0
+      - href: https://jiaweitang22.github.io/cs180-proj1/
+        text: CS 180 Project 1
+      - href: https://jiaweitang22.github.io/cs180-proj2/
+        text: CS 180 Project 2
+      - href: https://jiaweitang22.github.io/cs180-proj3/
+        text: CS 180 Project 3
+      - href: https://jiaweitang22.github.io/cs180-proj4/
+        text: CS 180 Project 4
+    right:
+      - icon: github
+        href: https://github.com/jiaweitang22/
+        aria-label: GitHub profile
+      - icon: linkedin
+        href: https://www.linkedin.com/in/jiaweitang22/
+        aria-label: LinkedIn profile
+  search: true
+  page-footer:
+    left: "Jiawei Tang · CS 180 · Fall 2026"
+    right: "Built with Quarto"
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    toc-title: On this page
+    toc-depth: 3
+    toc-expand: 2
+    smooth-scroll: true
+    html-math-method: mathjax
+    link-external-newwindow: true
+    code-copy: true
+    anchor-sections: true
+    grid:
+      body-width: 800px
+      margin-width: 230px
+
+execute:
+  enabled: false

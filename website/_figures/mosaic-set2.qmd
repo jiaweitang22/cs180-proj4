@@ -1,0 +1,8 @@
+
+**Set 2: Olive tree path**
+
+<div class="result-grid cols-2">
+<figure ><a href="assets/set2-source-0.webp" target="_blank" rel="noopener"><img src="assets/set2-source-0.webp" width="1200" height="1600" alt="Left: path through the olive trees" loading="lazy" decoding="async"></a><figcaption>Left: path through the olive trees</figcaption></figure>
+<figure ><a href="assets/set2-source-1.webp" target="_blank" rel="noopener"><img src="assets/set2-source-1.webp" width="1200" height="1600" alt="Right (reference): olive trees and black louvered building" loading="lazy" decoding="async"></a><figcaption>Right (reference): olive trees and black louvered building</figcaption></figure>
+</div>
+<figure class="course-figure"><a href="assets/set2-mosaic.webp" target="_blank" rel="noopener"><img src="assets/set2-mosaic.webp" width="1748" height="2000" alt="Set 2 mosaic" loading="lazy" decoding="async"></a><figcaption>Set 2 mosaic</figcaption></figure>

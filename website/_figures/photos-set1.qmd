@@ -1,0 +1,7 @@
+
+**Set 1: Visitor Center sign**
+
+<div class="result-grid cols-2">
+<figure ><a href="assets/set1-source-0.webp" target="_blank" rel="noopener"><img src="assets/set1-source-0.webp" width="1200" height="1600" alt="Left: road and crosswalk" loading="lazy" decoding="async"></a><figcaption>Left: road and crosswalk</figcaption></figure>
+<figure ><a href="assets/set1-source-1.webp" target="_blank" rel="noopener"><img src="assets/set1-source-1.webp" width="1200" height="1600" alt="Right (reference): sign and olive tree at the corner" loading="lazy" decoding="async"></a><figcaption>Right (reference): sign and olive tree at the corner</figcaption></figure>
+</div>
