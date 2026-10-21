@@ -2,7 +2,7 @@
 **Rectification 1: poster frame**
 
 <div class="result-grid cols-3">
-<figure ><a href="assets/rect1-original.webp" target="_blank" rel="noopener"><img src="assets/rect1-original.webp" width="1200" height="1600" alt="Original" loading="lazy" decoding="async"></a><figcaption>Original</figcaption></figure>
-<figure ><a href="assets/rect1-nearest.webp" target="_blank" rel="noopener"><img src="assets/rect1-nearest.webp" width="1481" height="2000" alt="Rectified · nearest neighbor" loading="lazy" decoding="async"></a><figcaption>Rectified · nearest neighbor</figcaption></figure>
-<figure ><a href="assets/rect1-bilinear.webp" target="_blank" rel="noopener"><img src="assets/rect1-bilinear.webp" width="1481" height="2000" alt="Rectified · bilinear" loading="lazy" decoding="async"></a><figcaption>Rectified · bilinear</figcaption></figure>
+<figure ><a href="assets/rect1-original.webp" class="lightbox" data-gallery="rect1" data-glightbox="description: Original"><img src="assets/rect1-original.webp" width="1200" height="1600" alt="Original" loading="lazy" decoding="async"></a><figcaption>Original</figcaption></figure>
+<figure ><a href="assets/rect1-nearest.webp" class="lightbox" data-gallery="rect1" data-glightbox="description: Rectified · nearest neighbor"><img src="assets/rect1-nearest.webp" width="1481" height="2000" alt="Rectified · nearest neighbor" loading="lazy" decoding="async"></a><figcaption>Rectified · nearest neighbor</figcaption></figure>
+<figure ><a href="assets/rect1-bilinear.webp" class="lightbox" data-gallery="rect1" data-glightbox="description: Rectified · bilinear"><img src="assets/rect1-bilinear.webp" width="1481" height="2000" alt="Rectified · bilinear" loading="lazy" decoding="async"></a><figcaption>Rectified · bilinear</figcaption></figure>
 </div>

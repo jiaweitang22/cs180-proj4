@@ -66,7 +66,9 @@ def figure_html(source, name, label, extra=""):
         body = f'<div class="placeholder-box">Missing: code/{escape(source)}</div>'
     else:
         width, height = size
-        body = (f'<a href="assets/{name}.webp" target="_blank" rel="noopener">'
+        # Quarto's lightbox opens these in place; arrows step through one set's images.
+        body = (f'<a href="assets/{name}.webp" class="lightbox" data-gallery="{name.split("-")[0]}" '
+                f'data-glightbox="description: {escape(label, quote=True)}">'
                 f'<img src="assets/{name}.webp" width="{width}" height="{height}" '
                 f'alt="{escape(label, quote=True)}" loading="lazy" decoding="async"></a>')
     return f'<figure {extra}>{body}<figcaption>{escape(label)}</figcaption></figure>'

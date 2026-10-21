@@ -2,7 +2,7 @@
 **Set 3: Apartment walkway**
 
 <div class="result-grid cols-2">
-<figure ><a href="assets/set3-source-0.webp" target="_blank" rel="noopener"><img src="assets/set3-source-0.webp" width="1200" height="1600" alt="Left: left building and walkway" loading="lazy" decoding="async"></a><figcaption>Left: left building and walkway</figcaption></figure>
-<figure ><a href="assets/set3-source-1.webp" target="_blank" rel="noopener"><img src="assets/set3-source-1.webp" width="1200" height="1600" alt="Right (reference): walkway and right building" loading="lazy" decoding="async"></a><figcaption>Right (reference): walkway and right building</figcaption></figure>
+<figure ><a href="assets/set3-source-0.webp" class="lightbox" data-gallery="set3" data-glightbox="description: Left: left building and walkway"><img src="assets/set3-source-0.webp" width="1200" height="1600" alt="Left: left building and walkway" loading="lazy" decoding="async"></a><figcaption>Left: left building and walkway</figcaption></figure>
+<figure ><a href="assets/set3-source-1.webp" class="lightbox" data-gallery="set3" data-glightbox="description: Right (reference): walkway and right building"><img src="assets/set3-source-1.webp" width="1200" height="1600" alt="Right (reference): walkway and right building" loading="lazy" decoding="async"></a><figcaption>Right (reference): walkway and right building</figcaption></figure>
 </div>
-<figure class="course-figure"><a href="assets/set3-mosaic.webp" target="_blank" rel="noopener"><img src="assets/set3-mosaic.webp" width="1665" height="2000" alt="Set 3 mosaic" loading="lazy" decoding="async"></a><figcaption>Set 3 mosaic</figcaption></figure>
+<figure class="course-figure"><a href="assets/set3-mosaic.webp" class="lightbox" data-gallery="set3" data-glightbox="description: Set 3 mosaic"><img src="assets/set3-mosaic.webp" width="1665" height="2000" alt="Set 3 mosaic" loading="lazy" decoding="async"></a><figcaption>Set 3 mosaic</figcaption></figure>
