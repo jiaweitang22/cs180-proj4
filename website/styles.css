@@ -23,10 +23,11 @@ mjx-container[display="true"] { max-width: 100%; overflow-x: auto; overflow-y: h
 .course-figure > a { display: block; }
 .course-figure img { display: block; width: 100%; height: auto; }
 .course-figure figcaption { text-align: center; font-size: .875rem; line-height: 1.45; color: #62676d; margin: .65rem auto 0; max-width: 720px; }
-/* Placeholders for missing outputs. */
-.placeholder-box { display: flex; align-items: center; justify-content: center; aspect-ratio: 4 / 3; padding: .5rem;
-  border: 1px dashed #b4b8bd; border-radius: 3px; background: #f7f8f9; color: #868e96; font-size: .8rem; text-align: center; overflow-wrap: anywhere; }
-.course-figure .placeholder-box { aspect-ratio: 16 / 7; }
+/* Figures grow slightly on hover; clicking opens the lightbox. */
+a.lightbox { cursor: zoom-in; transition: transform .3s ease; }
+@media (hover: hover) {
+  a.lightbox:hover { transform: scale(1.05); position: relative; z-index: 1; }
+}
 #part-b { border-top: 1px solid #eeeeee; padding-top: 2.2rem; margin-top: 3.5rem; }
 @media (max-width: 767px) {
   .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
@@ -35,6 +36,7 @@ mjx-container[display="true"] { max-width: 100%; overflow-x: auto; overflow-y: h
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto !important; }
+  a.lightbox { transition: none; }
 }
 @media print {
   @page { margin: 16mm; }

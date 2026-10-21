@@ -169,7 +169,7 @@
       ]
     },
     {
-      "file": "rect1-zoom.webp",
+      "file": "rect1-zoom.png",
       "source": "outputs/rect1_zoom.png",
       "size": [
         1425,
@@ -201,7 +201,7 @@
       ]
     },
     {
-      "file": "rect2-zoom.webp",
+      "file": "rect2-zoom.png",
       "source": "outputs/rect2_zoom.png",
       "size": [
         1425,
@@ -233,7 +233,7 @@
       ]
     },
     {
-      "file": "rect3-zoom.webp",
+      "file": "rect3-zoom.png",
       "source": "outputs/rect3_zoom.png",
       "size": [
         1425,
