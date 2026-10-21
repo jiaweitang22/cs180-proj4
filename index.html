@@ -41,7 +41,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-6925463af6acf52897ebc0c268b63afa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-41b905962474d0f59eee21bdb6423a18.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -226,13 +226,7 @@ window.Quarto = {
 <h1>Part A: Image Warping and Mosaicing</h1>
 <section id="shooting" class="level2">
 <h2 class="anchored" data-anchor-id="shooting">A.1 Shooting the Pictures</h2>
-<p>I shot all three sets in Cupertino on October 21, 2026, using the iPhone 17 Pro’s 1× main camera (6.8 mm, 24 mm equivalent). I avoided the 0.5× ultrawide because of its barrel distortion. Each set is two portrait photos. Between the shots I kept the phone in one spot and turned it, so the center of projection stays fixed and the two photos are related by a homography.</p>
-<ul>
-<li><strong>Set 1:</strong> the Visitor Center sign at 10600 N Tantau Avenue. The camera turned about 19° between shots, and the left photo covers 64% of the right one.</li>
-<li><strong>Set 2:</strong> a path through olive trees next to a black louvered building. About 19° apart, 65% overlap.</li>
-<li><strong>Set 3:</strong> a walkway between two apartment buildings. About 17° apart, 69% overlap.</li>
-</ul>
-<p>In Sets 2 and 3 both photos have the same exposure. In Set 1 the exposure changed by about 20% between shots, which the blending in A.4 smooths over.</p>
+<p>Three pairs shot in Cupertino with the iPhone 17 Pro’s 1× camera. For each pair I kept the phone in place and only rotated it (about 17–19°), so the two photos share a center of projection and are related by a homography. The photos overlap by 64–69%.</p>
 <p><strong>Set 1: Visitor Center sign</strong></p>
 <div class="result-grid cols-2">
 <figure class="figure">
@@ -281,14 +275,14 @@ Right (reference): walkway and right building
 </section>
 <section id="homographies" class="level2">
 <h2 class="anchored" data-anchor-id="homographies">A.2 Recovering Homographies</h2>
-<p>A homography maps a point <span class="math inline">\((x, y)\)</span> in one image to <span class="math inline">\((x', y')\)</span> in another, up to scale:</p>
+<p>A homography maps <span class="math inline">\((x, y)\)</span> to <span class="math inline">\((x', y')\)</span> up to scale:</p>
 <p><span class="math display">\[
 \begin{bmatrix} w x' \\ w y' \\ w \end{bmatrix}
 =
 \begin{bmatrix} a &amp; b &amp; c \\ d &amp; e &amp; f \\ g &amp; h &amp; 1 \end{bmatrix}
 \begin{bmatrix} x \\ y \\ 1 \end{bmatrix}.
 \]</span></p>
-<p>Fixing the bottom-right entry to 1 leaves 8 unknowns. Dividing out <span class="math inline">\(w\)</span> and multiplying through by the denominator gives two equations per correspondence that are linear in the unknowns:</p>
+<p>Dividing out <span class="math inline">\(w\)</span> and clearing the denominator gives two linear equations per correspondence:</p>
 <p><span class="math display">\[
 \begin{bmatrix}
 x &amp; y &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -x x' &amp; -y x' \\
@@ -300,11 +294,7 @@ x &amp; y &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -x x' &amp; -y x' \\
 \qquad
 \mathbf h = (a, b, c, d, e, f, g, h)^\top.
 \]</span></p>
-<p>Stacking <span class="math inline">\(n\)</span> correspondences gives a <span class="math inline">\(2n \times 8\)</span> system <span class="math inline">\(A\mathbf h = \mathbf b\)</span>. Four points determine <span class="math inline">\(H\)</span> exactly, but small errors in the points move it a lot, so I use 15 correspondences per pair and solve the overdetermined system with least squares:</p>
-<p><span class="math display">\[
-\hat{\mathbf h} = \arg\min_{\mathbf h} \lVert A\mathbf h - \mathbf b \rVert^2 .
-\]</span></p>
-<p>I clicked 15 corresponding point pairs for each set, spread over the top, middle and bottom of the overlap, then estimated each homography using least squares. Coordinates are pixels in the 1200 × 1600 images.</p>
+<p>Stacking <span class="math inline">\(n\)</span> correspondences gives a <span class="math inline">\(2n \times 8\)</span> system <span class="math inline">\(A\mathbf h = \mathbf b\)</span>, which I solve with least squares. I clicked 15 correspondences per pair, spread across the overlap.</p>
 <figure class="course-figure figure">
 <a href="assets/set1-correspondences-0.webp" target="_blank" rel="noopener"><img src="assets/set1-correspondences-0.webp" width="1250" height="831" alt="Set 1: numbered correspondences between the left photo and the reference" loading="lazy" decoding="async" class="figure-img"></a>
 <figcaption>
@@ -323,7 +313,7 @@ Set 2: numbered correspondences between the left photo and the reference
 Set 3: numbered correspondences between the left photo and the reference
 </figcaption>
 </figure>
-<p>For Set 1, mapping the left photo into the right (reference) photo’s frame, the first correspondence <span class="math inline">\((779.17, 693.52) \to (408.11, 672.04)\)</span>, the sign’s top-left corner, gives the first two rows of the system:</p>
+<p><strong>Example (Set 1).</strong> The first correspondence, <span class="math inline">\((779.17, 693.52) \to (408.11, 672.04)\)</span>, gives the first two rows of the <span class="math inline">\(30 \times 8\)</span> system:</p>
 <p><span class="math display">\[
 \begin{bmatrix}
 779.17 &amp; 693.52 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -317987.07 &amp; -283032.45 \\
@@ -333,23 +323,22 @@ Set 3: numbered correspondences between the left photo and the reference
 =
 \begin{bmatrix} 408.11 \\ 672.04 \end{bmatrix}.
 \]</span></p>
-<p>All 15 correspondences give a <span class="math inline">\(30 \times 8\)</span> system. Solving it gives</p>
+<p>Recovered homographies (left photo → right photo):</p>
 <p><span class="math display">\[
-H^{(1)}_{\text{left}\to\text{right}} = \begin{bmatrix}
+H_1 = \begin{bmatrix}
 1.5195 &amp; 0.0606 &amp; -683.89 \\
 0.2781 &amp; 1.3733 &amp; -267.93 \\
 4.060 \times 10^{-4} &amp; 3.359 \times 10^{-5} &amp; 1
-\end{bmatrix}.
-\]</span></p>
-<p>Sets 2 and 3 also use 15 correspondences each, a <span class="math inline">\(30 \times 8\)</span> system, and give</p>
-<p><span class="math display">\[
-H^{(2)}_{\text{left}\to\text{right}} = \begin{bmatrix}
+\end{bmatrix},
+\quad
+H_2 = \begin{bmatrix}
 1.4675 &amp; 0.0114 &amp; -607.27 \\
 0.2970 &amp; 1.3179 &amp; -251.65 \\
 3.770 \times 10^{-4} &amp; 1.331 \times 10^{-5} &amp; 1
 \end{bmatrix},
-\quad
-H^{(3)}_{\text{left}\to\text{right}} = \begin{bmatrix}
+\]</span></p>
+<p><span class="math display">\[
+H_3 = \begin{bmatrix}
 1.4589 &amp; 0.0014 &amp; -504.99 \\
 0.2993 &amp; 1.3310 &amp; -271.69 \\
 3.682 \times 10^{-4} &amp; 2.845 \times 10^{-5} &amp; 1
@@ -358,17 +347,17 @@ H^{(3)}_{\text{left}\to\text{right}} = \begin{bmatrix}
 </section>
 <section id="warping" class="level2">
 <h2 class="anchored" data-anchor-id="warping">A.3 Warping the Images</h2>
-<p>I warp with inverse mapping. I first send the four image corners through <span class="math inline">\(H\)</span> to find the output bounding box. Then, for every output pixel, I map its center back through <span class="math inline">\(H^{-1}\)</span> and sample the input there, so the output has no holes. Pixel <span class="math inline">\((0, 0)\)</span> is the center of the top-left pixel. Output pixels whose source falls outside the input get alpha 0.</p>
+<p>Inverse warping: I send the image corners through <span class="math inline">\(H\)</span> to get the output bounding box, then map every output pixel back through <span class="math inline">\(H^{-1}\)</span> and sample the source. Pixels that map outside the source get alpha 0.</p>
 <ul>
-<li><strong>Nearest neighbor</strong> rounds the source location to the closest pixel.</li>
-<li><strong>Bilinear</strong> blends the four surrounding pixels. With <span class="math inline">\(x_0 = \lfloor x \rfloor\)</span>, <span class="math inline">\(\alpha = x - x_0\)</span> and likewise <span class="math inline">\(y_0\)</span>, <span class="math inline">\(\beta\)</span>:</li>
+<li><strong>Nearest neighbor:</strong> round to the closest pixel.</li>
+<li><strong>Bilinear:</strong> with <span class="math inline">\(x_0 = \lfloor x \rfloor\)</span>, <span class="math inline">\(\alpha = x - x_0\)</span> (and <span class="math inline">\(y_0\)</span>, <span class="math inline">\(\beta\)</span> likewise),</li>
 </ul>
 <p><span class="math display">\[
 I(x, y) = (1-\alpha)(1-\beta)\, I_{x_0, y_0} + \alpha(1-\beta)\, I_{x_0+1, y_0} + (1-\alpha)\beta\, I_{x_0, y_0+1} + \alpha\beta\, I_{x_0+1, y_0+1}.
 \]</span></p>
 <section id="rectification" class="level3">
 <h3 class="anchored" data-anchor-id="rectification">Rectification</h3>
-<p>To test the warp, I mark the four corners of an object I know is rectangular, in the order top-left, top-right, bottom-right, bottom-left, zooming in to place each to about a pixel. I map them to the corners of a rectangle with the object’s aspect ratio: 22 × 28 in for the poster frame and 8.5 × 11 in for the letter-size flyer. I don’t know the menu board’s size, so I estimated about 1.6 : 1 and checked that the lettering looks undistorted. Each rectified image is the whole photo warped into the plane of the object.</p>
+<p>I click the four corners of a rectangular object and map them to a rectangle with its aspect ratio: 22 × 28 in for the poster frame, 8.5 × 11 in for the flyer, and about 1.6 : 1 (estimated) for the menu board.</p>
 <p><strong>Rectification 1: poster frame</strong></p>
 <div class="result-grid cols-3">
 <figure class="figure">
@@ -446,27 +435,26 @@ Rectified · bilinear
 </thead>
 <tbody>
 <tr class="odd">
-<td>Rectification 1: poster frame</td>
+<td>Poster frame</td>
 <td>1543 × 2084</td>
 <td>0.25 s</td>
 <td>0.45 s</td>
 </tr>
 <tr class="even">
-<td>Rectification 2: flyer</td>
+<td>Flyer</td>
 <td>2580 × 3386</td>
 <td>0.65 s</td>
 <td>1.16 s</td>
 </tr>
 <tr class="odd">
-<td>Rectification 3: menu board</td>
+<td>Menu board</td>
 <td>1856 × 2284</td>
 <td>0.35 s</td>
 <td>0.75 s</td>
 </tr>
 </tbody>
 </table>
-<p>Bilinear takes about twice as long as nearest neighbor. It reads four source pixels per output pixel instead of one and blends them. Both are vectorized over the whole output, so even the 8.7-megapixel flyer result takes about a second.</p>
-<p>The crops below come from the middle of each rectified object. Where the warp enlarges the photo, nearest neighbor repeats source pixels, so letters get stair-stepped edges and thin strokes change thickness from letter to letter. This is clearest on the flyer and the menu, which are stretched to about 1.5 to 1.7 times their size in the photo. Bilinear keeps edges smooth, at the cost of slightly softer text. On the poster frame, which is mostly shrunk, the difference is smaller but still shows as jagged poster borders. Bilinear’s extra cost is small next to the quality gain, so I use it for the mosaics.</p>
+<p>Bilinear is about 2× slower, since it reads four pixels instead of one. Zoomed in, nearest neighbor gives jagged, blocky letter edges where the photo is enlarged, while bilinear stays smooth and only slightly softer. The quality is worth the cost, so I use bilinear for the mosaics.</p>
 <figure class="course-figure figure">
 <a href="assets/rect1-zoom.webp" target="_blank" rel="noopener"><img src="assets/rect1-zoom.webp" width="1425" height="695" alt="Rectification 1: poster frame: nearest neighbor (left) vs. bilinear (right), zoomed" loading="lazy" decoding="async" class="figure-img"></a>
 <figcaption>
@@ -489,14 +477,16 @@ Rectification 3: menu board: nearest neighbor (left) vs.&nbsp;bilinear (right), 
 </section>
 <section id="mosaics" class="level2">
 <h2 class="anchored" data-anchor-id="mosaics">A.4 Blending into a Mosaic</h2>
-<p>The right photo of each set is the reference, and I warp the left photo into its frame. To place every image on one canvas, I send each image’s corners through its homography and take the bounding box of all of them. Every image is then inverse-warped onto that same box, so they all land in one frame.</p>
-<p>Overwriting one image with the next leaves hard seams, so I blend instead. Each image gets a weight that is 1 at its center and falls linearly to 0 at its edges: the distance transform of the image’s footprint, normalized to a maximum of 1. The weight is warped along with the image.</p>
-<p>A plain weighted average of the overlapping images doubles any edge that is a few pixels off, which happens wherever the homography fits less well, such as the curb near the camera at the bottom of Set 3. So I blend in two bands, a 2-level Laplacian pyramid:</p>
+<ol type="1">
+<li>Keep the right photo fixed and warp the left photo into its frame, on a canvas that fits both.</li>
+<li>Give each image a weight that is 1 at its center and falls to 0 at its edges (a distance transform), warped along with the image.</li>
+<li>Blend in two bands so that small misalignments don’t show up as doubled edges:
 <ul>
-<li><strong>Low band:</strong> each warped image is blurred with a Gaussian (<span class="math inline">\(\sigma = 8\)</span> px). These are combined with the weighted average <span class="math inline">\(\sum_i w_i I_i / \sum_i w_i\)</span>, so brightness differences fade smoothly across the overlap.</li>
-<li><strong>High band:</strong> each image minus its blur. At each pixel it is taken from the single image with the largest weight, so edges are never doubled.</li>
-</ul>
-<p>The mosaic is the sum of the two bands.</p>
+<li><strong>Low band</strong> (Gaussian blur, <span class="math inline">\(\sigma = 8\)</span>): weighted average, so brightness changes fade across the overlap.</li>
+<li><strong>High band</strong> (image minus blur): taken from whichever image has the larger weight at each pixel.</li>
+</ul></li>
+<li>Add the two bands to get the mosaic.</li>
+</ol>
 <p><strong>Set 1: Visitor Center sign</strong></p>
 <div class="result-grid cols-2">
 <figure class="figure">
