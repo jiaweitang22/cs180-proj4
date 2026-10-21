@@ -1,7 +1,7 @@
 {
   "assets": [
     {
-      "file": "set1-source-0.webp",
+      "file": "set1-source-0.jpg",
       "source": "images/set1_left.jpg",
       "size": [
         1200,
@@ -9,7 +9,7 @@
       ]
     },
     {
-      "file": "set1-source-1.webp",
+      "file": "set1-source-1.jpg",
       "source": "images/set1_right.jpg",
       "size": [
         1200,
@@ -17,7 +17,7 @@
       ]
     },
     {
-      "file": "set1-correspondences-0.webp",
+      "file": "set1-correspondences-0.png",
       "source": "outputs/set1_0_points.png",
       "size": [
         1250,
@@ -25,31 +25,15 @@
       ]
     },
     {
-      "file": "set1-source-0.webp",
-      "source": "images/set1_left.jpg",
+      "file": "set1-mosaic.png",
+      "source": "outputs/set1_mosaic.png",
       "size": [
-        1200,
-        1600
+        1883,
+        2097
       ]
     },
     {
-      "file": "set1-source-1.webp",
-      "source": "images/set1_right.jpg",
-      "size": [
-        1200,
-        1600
-      ]
-    },
-    {
-      "file": "set1-mosaic.webp",
-      "source": "outputs/set1_mosaic.jpg",
-      "size": [
-        1796,
-        2000
-      ]
-    },
-    {
-      "file": "set2-source-0.webp",
+      "file": "set2-source-0.jpg",
       "source": "images/set2_left.jpg",
       "size": [
         1200,
@@ -57,7 +41,7 @@
       ]
     },
     {
-      "file": "set2-source-1.webp",
+      "file": "set2-source-1.jpg",
       "source": "images/set2_right.jpg",
       "size": [
         1200,
@@ -65,7 +49,7 @@
       ]
     },
     {
-      "file": "set2-correspondences-0.webp",
+      "file": "set2-correspondences-0.png",
       "source": "outputs/set2_0_points.png",
       "size": [
         1250,
@@ -73,31 +57,15 @@
       ]
     },
     {
-      "file": "set2-source-0.webp",
-      "source": "images/set2_left.jpg",
+      "file": "set2-mosaic.png",
+      "source": "outputs/set2_mosaic.png",
       "size": [
-        1200,
-        1600
+        1807,
+        2068
       ]
     },
     {
-      "file": "set2-source-1.webp",
-      "source": "images/set2_right.jpg",
-      "size": [
-        1200,
-        1600
-      ]
-    },
-    {
-      "file": "set2-mosaic.webp",
-      "source": "outputs/set2_mosaic.jpg",
-      "size": [
-        1748,
-        2000
-      ]
-    },
-    {
-      "file": "set3-source-0.webp",
+      "file": "set3-source-0.jpg",
       "source": "images/set3_left.jpg",
       "size": [
         1200,
@@ -105,7 +73,7 @@
       ]
     },
     {
-      "file": "set3-source-1.webp",
+      "file": "set3-source-1.jpg",
       "source": "images/set3_right.jpg",
       "size": [
         1200,
@@ -113,7 +81,7 @@
       ]
     },
     {
-      "file": "set3-correspondences-0.webp",
+      "file": "set3-correspondences-0.png",
       "source": "outputs/set3_0_points.png",
       "size": [
         1250,
@@ -121,31 +89,15 @@
       ]
     },
     {
-      "file": "set3-source-0.webp",
-      "source": "images/set3_left.jpg",
+      "file": "set3-mosaic.png",
+      "source": "outputs/set3_mosaic.png",
       "size": [
-        1200,
-        1600
+        1704,
+        2047
       ]
     },
     {
-      "file": "set3-source-1.webp",
-      "source": "images/set3_right.jpg",
-      "size": [
-        1200,
-        1600
-      ]
-    },
-    {
-      "file": "set3-mosaic.webp",
-      "source": "outputs/set3_mosaic.jpg",
-      "size": [
-        1665,
-        2000
-      ]
-    },
-    {
-      "file": "rect1-original.webp",
+      "file": "rect1-original.jpg",
       "source": "images/rect1.jpg",
       "size": [
         1200,
@@ -153,19 +105,19 @@
       ]
     },
     {
-      "file": "rect1-nearest.webp",
+      "file": "rect1-nearest.png",
       "source": "outputs/rect1_rectified_nearest.png",
       "size": [
-        1481,
-        2000
+        1543,
+        2084
       ]
     },
     {
-      "file": "rect1-bilinear.webp",
+      "file": "rect1-bilinear.png",
       "source": "outputs/rect1_rectified_bilinear.png",
       "size": [
-        1481,
-        2000
+        1543,
+        2084
       ]
     },
     {
@@ -177,7 +129,7 @@
       ]
     },
     {
-      "file": "rect2-original.webp",
+      "file": "rect2-original.jpg",
       "source": "images/rect2.jpg",
       "size": [
         1200,
@@ -185,19 +137,19 @@
       ]
     },
     {
-      "file": "rect2-nearest.webp",
+      "file": "rect2-nearest.png",
       "source": "outputs/rect2_rectified_nearest.png",
       "size": [
-        1524,
-        2000
+        2580,
+        3386
       ]
     },
     {
-      "file": "rect2-bilinear.webp",
+      "file": "rect2-bilinear.png",
       "source": "outputs/rect2_rectified_bilinear.png",
       "size": [
-        1524,
-        2000
+        2580,
+        3386
       ]
     },
     {
@@ -209,7 +161,7 @@
       ]
     },
     {
-      "file": "rect3-original.webp",
+      "file": "rect3-original.jpg",
       "source": "images/rect3.jpg",
       "size": [
         1200,
@@ -217,19 +169,19 @@
       ]
     },
     {
-      "file": "rect3-nearest.webp",
+      "file": "rect3-nearest.png",
       "source": "outputs/rect3_rectified_nearest.png",
       "size": [
-        1625,
-        2000
+        1856,
+        2284
       ]
     },
     {
-      "file": "rect3-bilinear.webp",
+      "file": "rect3-bilinear.png",
       "source": "outputs/rect3_rectified_bilinear.png",
       "size": [
-        1625,
-        2000
+        1856,
+        2284
       ]
     },
     {

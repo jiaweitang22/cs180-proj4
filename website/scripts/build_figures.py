@@ -1,4 +1,4 @@
-"""Build WebP assets (PNG for the interpolation close-ups) and Quarto figures from the notebook outputs.
+"""Copy the notebook outputs into assets/ byte for byte and build the Quarto figures.
 
 Run from the project root after saving results:
     .venv/bin/python website/scripts/build_figures.py
@@ -11,13 +11,12 @@ import json
 from pathlib import Path
 import shutil
 
-from PIL import Image, ImageOps
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 CODE = ROOT.parent / "code"
 ASSETS = ROOT / "assets"
 FIGURES = ROOT / "_figures"
-MAX_SIDE = 2000  # Preserve enough detail for wide mosaics.
 
 SETS = {
     # name: (title, scene, [(source photo in code/images/, position, what it shows)], index of the reference photo)
@@ -47,29 +46,22 @@ manifest = {"assets": []}
 
 
 @cache
-def export_asset(source, name, lossless=False):
-    """Convert code/<source> to assets/<name>.webp, or copy it byte for byte as PNG if lossless.
+def export_asset(source, name):
+    """Copy code/<source> to assets/<name> unchanged (no resizing or re-encoding), keeping its extension.
 
     Returns (published file name, size). Repeated figures reuse the same export.
     """
     path = CODE / source
-    if lossless:
-        shutil.copyfile(path, ASSETS / f"{name}.png")
-        with Image.open(path) as im:
-            size = im.size
-        manifest["assets"].append({"file": f"{name}.png", "source": source, "size": list(size)})
-        return f"{name}.png", size
-    with Image.open(path) as original:
-        im = ImageOps.exif_transpose(original)
-    im = im.convert("RGBA" if im.mode in ("RGBA", "LA", "P") else "RGB")
-    im.thumbnail((MAX_SIDE, MAX_SIDE), Image.Resampling.LANCZOS)
-    im.save(ASSETS / f"{name}.webp", quality=88, method=6)
-    manifest["assets"].append({"file": f"{name}.webp", "source": source, "size": list(im.size)})
-    return f"{name}.webp", im.size
+    file = f"{name}{path.suffix}"
+    shutil.copyfile(path, ASSETS / file)
+    with Image.open(path) as im:
+        size = im.size
+    manifest["assets"].append({"file": file, "source": source, "size": list(size)})
+    return file, size
 
 
-def figure_html(source, name, label, extra="", lossless=False):
-    file, (width, height) = export_asset(source, name, lossless)
+def figure_html(source, name, label, extra=""):
+    file, (width, height) = export_asset(source, name)
     body = (f'<a href="assets/{file}" class="lightbox" data-gallery="{name.split("-")[0]}" '
             f'data-glightbox="description: {escape(label, quote=True)}">'
             f'<img src="assets/{file}" width="{width}" height="{height}" '
@@ -82,8 +74,8 @@ def figure_grid(items):
             + '\n'.join(figure_html(*item) for item in items) + '\n</div>\n')
 
 
-def wide_figure(source, name, label, lossless=False):
-    return figure_html(source, name, label, 'class="course-figure"', lossless) + '\n'
+def wide_figure(source, name, label):
+    return figure_html(source, name, label, 'class="course-figure"') + '\n'
 
 
 def write_figure(name, body):
@@ -102,7 +94,7 @@ for key, (title, scene, photos, ref) in SETS.items():
              f"{title}: numbered correspondences between the {position.lower()} photo and the reference")
         for i, (_, position, _) in enumerate(photos) if i != ref))
     write_figure(f"mosaic-{key}", heading + figure_grid(sources)
-          + wide_figure(f"outputs/{key}_mosaic.jpg", f"{key}-mosaic", f"{title} mosaic"))
+          + wide_figure(f"outputs/{key}_mosaic.png", f"{key}-mosaic", f"{title} mosaic"))
 
 for key, (title, original) in RECTIFY.items():
     write_figure(f"rectify-{key}", f"\n**{title}**\n\n" + figure_grid([
@@ -110,11 +102,9 @@ for key, (title, original) in RECTIFY.items():
         (f"outputs/{key}_rectified_nearest.png", f"{key}-nearest", "Rectified · nearest neighbor"),
         (f"outputs/{key}_rectified_bilinear.png", f"{key}-bilinear", "Rectified · bilinear"),
     ]))
-    # The notebook saves the same crop from both results side by side. Lossless, so the
-    # pixel-level differences between the two methods are not blurred by compression.
+    # The notebook saves the same crop from both results side by side.
     write_figure(f"zoom-{key}", wide_figure(f"outputs/{key}_zoom.png", f"{key}-zoom",
-                                            f"{title}: nearest neighbor (left) vs. bilinear (right), zoomed",
-                                            lossless=True))
+                                            f"{title}: nearest neighbor (left) vs. bilinear (right), zoomed"))
 
 (ASSETS / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 print(f"Built {len(list(FIGURES.glob('*.qmd')))} figure layouts with {len(manifest['assets'])} assets.")

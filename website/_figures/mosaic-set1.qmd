@@ -2,7 +2,7 @@
 **Set 1: Visitor Center sign**
 
 <div class="result-grid cols-2">
-<figure ><a href="assets/set1-source-0.webp" class="lightbox" data-gallery="set1" data-glightbox="description: Left: road and crosswalk"><img src="assets/set1-source-0.webp" width="1200" height="1600" alt="Left: road and crosswalk" loading="lazy" decoding="async"></a><figcaption>Left: road and crosswalk</figcaption></figure>
-<figure ><a href="assets/set1-source-1.webp" class="lightbox" data-gallery="set1" data-glightbox="description: Right (reference): sign and olive tree at the corner"><img src="assets/set1-source-1.webp" width="1200" height="1600" alt="Right (reference): sign and olive tree at the corner" loading="lazy" decoding="async"></a><figcaption>Right (reference): sign and olive tree at the corner</figcaption></figure>
+<figure ><a href="assets/set1-source-0.jpg" class="lightbox" data-gallery="set1" data-glightbox="description: Left: road and crosswalk"><img src="assets/set1-source-0.jpg" width="1200" height="1600" alt="Left: road and crosswalk" loading="lazy" decoding="async"></a><figcaption>Left: road and crosswalk</figcaption></figure>
+<figure ><a href="assets/set1-source-1.jpg" class="lightbox" data-gallery="set1" data-glightbox="description: Right (reference): sign and olive tree at the corner"><img src="assets/set1-source-1.jpg" width="1200" height="1600" alt="Right (reference): sign and olive tree at the corner" loading="lazy" decoding="async"></a><figcaption>Right (reference): sign and olive tree at the corner</figcaption></figure>
 </div>
-<figure class="course-figure"><a href="assets/set1-mosaic.webp" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1 mosaic"><img src="assets/set1-mosaic.webp" width="1796" height="2000" alt="Set 1 mosaic" loading="lazy" decoding="async"></a><figcaption>Set 1 mosaic</figcaption></figure>
+<figure class="course-figure"><a href="assets/set1-mosaic.png" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1 mosaic"><img src="assets/set1-mosaic.png" width="1883" height="2097" alt="Set 1 mosaic" loading="lazy" decoding="async"></a><figcaption>Set 1 mosaic</figcaption></figure>
