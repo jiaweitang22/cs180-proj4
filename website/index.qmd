@@ -277,6 +277,50 @@ Bilinear is about 1.4–2× slower, since it reads four pixels instead of one. Z
 
 {{< include _figures/mosaic-set3.qmd >}}
 
-# Part B {#part-b}
+# Part B: Feature Matching for Autostitching {#part-b}
 
-[TODO: Part B is due Tuesday, Nov 10, 2026.]
+Part B finds the correspondences automatically, following the MOPS paper (Brown et al.) at a single scale and without rotation. It uses the same three pairs as Part A.
+
+## B.1 Harris Corners and ANMS {#harris}
+
+I run the course's `harris.py` on the grayscale image and drop corners with strength below 0.01, which are noise in flat sky. ANMS gives each corner a suppression radius, the distance to the nearest clearly stronger corner,
+
+$$
+r_i = \min_j \lVert \mathbf x_i - \mathbf x_j \rVert \ \ \text{s.t.}\ \ f(\mathbf x_i) < 0.9\, f(\mathbf x_j),
+$$
+
+and keeps the 500 corners with the largest $r_i$. The 500 strongest corners pile into the tree canopies; ANMS spreads them over the whole photo.
+
+{{< include _figures/harris-set1.qmd >}}
+
+{{< include _figures/harris-set2.qmd >}}
+
+{{< include _figures/harris-set3.qmd >}}
+
+## B.2 Feature Descriptors {#descriptors}
+
+Each descriptor is an axis-aligned 8×8 grid sampled every 5 px from a 40×40 window of the blurred ($\sigma = 2.5$) grayscale image, then normalized to mean 0 and standard deviation 1.
+
+{{< include _figures/descriptors-set1.qmd >}}
+
+## B.3 Feature Matching {#matching}
+
+Each left-photo descriptor is matched to its nearest reference descriptor if the ratio of squared distances to the first and second nearest neighbors is below 0.5 (Lowe's test; the paper's Figure 6b shows wrong matches dominating above about 0.5). This gives 144, 166 and 236 matches. The few crossing lines are outliers that RANSAC removes.
+
+{{< include _figures/matches-set1.qmd >}}
+
+{{< include _figures/matches-set2.qmd >}}
+
+{{< include _figures/matches-set3.qmd >}}
+
+## B.4 RANSAC and Automatic Mosaics {#ransac}
+
+Each of 2000 iterations fits an exact homography to 4 random matches and counts the matches it maps within 3 px. The final $H$ is the least-squares fit to the largest inlier set (111, 132 and 160 inliers). The mosaics use the A.4 warp and blend.
+
+The automatic mosaics match the manual ones, with no ghosting along the overlap.
+
+{{< include _figures/auto-mosaic-set1.qmd >}}
+
+{{< include _figures/auto-mosaic-set2.qmd >}}
+
+{{< include _figures/auto-mosaic-set3.qmd >}}

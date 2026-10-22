@@ -44,7 +44,7 @@ format:
     toc-title: On this page
     toc-depth: 3
     include-after-body: lightbox.html
-    toc-expand: 2
+    toc-expand: 1
     smooth-scroll: true
     html-math-method: mathjax
     link-external-newwindow: true

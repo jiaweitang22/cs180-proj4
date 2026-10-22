@@ -191,6 +191,86 @@
         1424,
         695
       ]
+    },
+    {
+      "file": "set1-harris.png",
+      "source": "outputs/set1_1_harris.png",
+      "size": [
+        1425,
+        977
+      ]
+    },
+    {
+      "file": "set1-matches.png",
+      "source": "outputs/set1_3_matches.png",
+      "size": [
+        1242,
+        838
+      ]
+    },
+    {
+      "file": "set1-mosaic-auto.png",
+      "source": "outputs/set1_4_mosaic_auto.png",
+      "size": [
+        1887,
+        2103
+      ]
+    },
+    {
+      "file": "set2-harris.png",
+      "source": "outputs/set2_1_harris.png",
+      "size": [
+        1425,
+        977
+      ]
+    },
+    {
+      "file": "set2-matches.png",
+      "source": "outputs/set2_3_matches.png",
+      "size": [
+        1242,
+        838
+      ]
+    },
+    {
+      "file": "set2-mosaic-auto.png",
+      "source": "outputs/set2_4_mosaic_auto.png",
+      "size": [
+        1798,
+        2068
+      ]
+    },
+    {
+      "file": "set3-harris.png",
+      "source": "outputs/set3_1_harris.png",
+      "size": [
+        1425,
+        977
+      ]
+    },
+    {
+      "file": "set3-matches.png",
+      "source": "outputs/set3_3_matches.png",
+      "size": [
+        1242,
+        838
+      ]
+    },
+    {
+      "file": "set3-mosaic-auto.png",
+      "source": "outputs/set3_4_mosaic_auto.png",
+      "size": [
+        1663,
+        1950
+      ]
+    },
+    {
+      "file": "set1-descriptors.png",
+      "source": "outputs/set1_2_descriptors.png",
+      "size": [
+        1890,
+        536
+      ]
     }
   ]
 }

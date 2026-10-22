@@ -1,0 +1,7 @@
+
+**Set 3**
+
+<div class="result-grid cols-2">
+<figure ><a href="assets/set3-mosaic.png" class="lightbox" data-gallery="set3" data-glightbox="description: Set 3 · manual (Part A)"><img src="assets/set3-mosaic.png" width="1704" height="2047" alt="Set 3 · manual (Part A)" loading="lazy" decoding="async"></a><figcaption>Set 3 · manual (Part A)</figcaption></figure>
+<figure ><a href="assets/set3-mosaic-auto.png" class="lightbox" data-gallery="set3" data-glightbox="description: Set 3 · automatic (RANSAC)"><img src="assets/set3-mosaic-auto.png" width="1663" height="1950" alt="Set 3 · automatic (RANSAC)" loading="lazy" decoding="async"></a><figcaption>Set 3 · automatic (RANSAC)</figcaption></figure>
+</div>

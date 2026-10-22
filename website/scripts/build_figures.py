@@ -3,7 +3,7 @@
 Run from the project root after saving results:
     .venv/bin/python website/scripts/build_figures.py
 
-Keep SETS and RECTIFY in sync with code/parta.ipynb.
+Keep SETS and RECTIFY in sync with code/parta.ipynb; Part B figures come from code/partb.ipynb.
 """
 from html import escape
 from functools import cache
@@ -105,6 +105,22 @@ for key, (title, original) in RECTIFY.items():
     # The notebook saves the same crop from both results side by side.
     write_figure(f"zoom-{key}", wide_figure(f"outputs/{key}_zoom.png", f"{key}-zoom",
                                             f"{title}: nearest neighbor (left) vs. bilinear (right), zoomed"))
+
+# Part B (code/partb.ipynb): same sets, with the left photo shown for corners and descriptors.
+for key, (title, *_) in SETS.items():
+    write_figure(f"harris-{key}", wide_figure(
+        f"outputs/{key}_1_harris.png", f"{key}-harris",
+        f"{title}, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)"))
+    write_figure(f"matches-{key}", wide_figure(
+        f"outputs/{key}_3_matches.png", f"{key}-matches",
+        f"{title}: matches that pass the ratio test, left photo to reference"))
+    write_figure(f"auto-mosaic-{key}", f"\n**{title}**\n\n" + figure_grid([
+        (f"outputs/{key}_mosaic.png", f"{key}-mosaic", f"{title} · manual (Part A)"),
+        (f"outputs/{key}_4_mosaic_auto.png", f"{key}-mosaic-auto", f"{title} · automatic (RANSAC)"),
+    ]))
+write_figure("descriptors-set1", wide_figure(
+    "outputs/set1_2_descriptors.png", "set1-descriptors",
+    "Set 1: 40×40 windows around eight ANMS corners (top) and their normalized 8×8 descriptors (bottom)"))
 
 (ASSETS / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
 print(f"Built {len(list(FIGURES.glob('*.qmd')))} figure layouts with {len(manifest['assets'])} assets.")
