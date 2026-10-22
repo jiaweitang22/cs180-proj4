@@ -41,7 +41,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-6925463af6acf52897ebc0c268b63afa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-41b905962474d0f59eee21bdb6423a18.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -169,7 +169,7 @@ window.Quarto = {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="1">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -184,7 +184,13 @@ window.Quarto = {
   </ul></li>
   <li><a href="#mosaics" id="toc-mosaics" class="nav-link" data-scroll-target="#mosaics">A.4 Blending into a Mosaic</a></li>
   </ul></li>
-  <li><a href="#part-b" id="toc-part-b" class="nav-link" data-scroll-target="#part-b">Part B</a></li>
+  <li><a href="#part-b" id="toc-part-b" class="nav-link" data-scroll-target="#part-b">Part B: Feature Matching for Autostitching</a>
+  <ul class="collapse">
+  <li><a href="#harris" id="toc-harris" class="nav-link" data-scroll-target="#harris">B.1 Harris Corners and ANMS</a></li>
+  <li><a href="#descriptors" id="toc-descriptors" class="nav-link" data-scroll-target="#descriptors">B.2 Feature Descriptors</a></li>
+  <li><a href="#matching" id="toc-matching" class="nav-link" data-scroll-target="#matching">B.3 Feature Matching</a></li>
+  <li><a href="#ransac" id="toc-ransac" class="nav-link" data-scroll-target="#ransac">B.4 RANSAC and Automatic Mosaics</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -689,10 +695,118 @@ Set 3 mosaic
 </section>
 </section>
 <section id="part-b" class="level1">
-<h1>Part B</h1>
-<p>[TODO: Part B is due Tuesday, Nov 10, 2026.]</p>
+<h1>Part B: Feature Matching for Autostitching</h1>
+<p>Part B finds the correspondences automatically, following the MOPS paper (Brown et al.) at a single scale and without rotation. It uses the same three pairs as Part A.</p>
+<section id="harris" class="level2">
+<h2 class="anchored" data-anchor-id="harris">B.1 Harris Corners and ANMS</h2>
+<p>I run the course’s <code>harris.py</code> on the grayscale image and drop corners with strength below 0.01, which are noise in flat sky. ANMS gives each corner a suppression radius, the distance to the nearest clearly stronger corner,</p>
+<p><span class="math display">\[
+r_i = \min_j \lVert \mathbf x_i - \mathbf x_j \rVert \ \ \text{s.t.}\ \ f(\mathbf x_i) &lt; 0.9\, f(\mathbf x_j),
+\]</span></p>
+<p>and keeps the 500 corners with the largest <span class="math inline">\(r_i\)</span>. The 500 strongest corners pile into the tree canopies; ANMS spreads them over the whole photo.</p>
+<figure class="course-figure figure">
+<a href="assets/set1-harris.png" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)"><img src="assets/set1-harris.png" width="1425" height="977" alt="Set 1, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 1, left photo: the 500 strongest Harris corners (left) vs.&nbsp;500 corners chosen by ANMS (right)
+</figcaption>
+</figure>
+<figure class="course-figure figure">
+<a href="assets/set2-harris.png" class="lightbox" data-gallery="set2" data-glightbox="description: Set 2, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)"><img src="assets/set2-harris.png" width="1425" height="977" alt="Set 2, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 2, left photo: the 500 strongest Harris corners (left) vs.&nbsp;500 corners chosen by ANMS (right)
+</figcaption>
+</figure>
+<figure class="course-figure figure">
+<a href="assets/set3-harris.png" class="lightbox" data-gallery="set3" data-glightbox="description: Set 3, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)"><img src="assets/set3-harris.png" width="1425" height="977" alt="Set 3, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 3, left photo: the 500 strongest Harris corners (left) vs.&nbsp;500 corners chosen by ANMS (right)
+</figcaption>
+</figure>
+</section>
+<section id="descriptors" class="level2">
+<h2 class="anchored" data-anchor-id="descriptors">B.2 Feature Descriptors</h2>
+<p>Each descriptor is an axis-aligned 8×8 grid sampled every 5 px from a 40×40 window of the blurred (<span class="math inline">\(\sigma = 2.5\)</span>) grayscale image, then normalized to mean 0 and standard deviation 1.</p>
+<figure class="course-figure figure">
+<a href="assets/set1-descriptors.png" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1: 40×40 windows around eight ANMS corners (top) and their normalized 8×8 descriptors (bottom)"><img src="assets/set1-descriptors.png" width="1890" height="536" alt="Set 1: 40×40 windows around eight ANMS corners (top) and their normalized 8×8 descriptors (bottom)" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 1: 40×40 windows around eight ANMS corners (top) and their normalized 8×8 descriptors (bottom)
+</figcaption>
+</figure>
+</section>
+<section id="matching" class="level2">
+<h2 class="anchored" data-anchor-id="matching">B.3 Feature Matching</h2>
+<p>Each left-photo descriptor is matched to its nearest reference descriptor if the ratio of squared distances to the first and second nearest neighbors is below 0.5 (Lowe’s test; the paper’s Figure 6b shows wrong matches dominating above about 0.5). This gives 144, 166 and 236 matches. The few crossing lines are outliers that RANSAC removes.</p>
+<figure class="course-figure figure">
+<a href="assets/set1-matches.png" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1: matches that pass the ratio test, left photo to reference"><img src="assets/set1-matches.png" width="1242" height="838" alt="Set 1: matches that pass the ratio test, left photo to reference" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 1: matches that pass the ratio test, left photo to reference
+</figcaption>
+</figure>
+<figure class="course-figure figure">
+<a href="assets/set2-matches.png" class="lightbox" data-gallery="set2" data-glightbox="description: Set 2: matches that pass the ratio test, left photo to reference"><img src="assets/set2-matches.png" width="1242" height="838" alt="Set 2: matches that pass the ratio test, left photo to reference" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 2: matches that pass the ratio test, left photo to reference
+</figcaption>
+</figure>
+<figure class="course-figure figure">
+<a href="assets/set3-matches.png" class="lightbox" data-gallery="set3" data-glightbox="description: Set 3: matches that pass the ratio test, left photo to reference"><img src="assets/set3-matches.png" width="1242" height="838" alt="Set 3: matches that pass the ratio test, left photo to reference" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 3: matches that pass the ratio test, left photo to reference
+</figcaption>
+</figure>
+</section>
+<section id="ransac" class="level2">
+<h2 class="anchored" data-anchor-id="ransac">B.4 RANSAC and Automatic Mosaics</h2>
+<p>Each of 2000 iterations fits an exact homography to 4 random matches and counts the matches it maps within 3 px. The final <span class="math inline">\(H\)</span> is the least-squares fit to the largest inlier set (111, 132 and 160 inliers). The mosaics use the A.4 warp and blend.</p>
+<p>The automatic mosaics match the manual ones, with no ghosting along the overlap.</p>
+<p><strong>Set 1</strong></p>
+<div class="result-grid cols-2">
+<figure class="figure">
+<a href="assets/set1-mosaic.png" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1 · manual (Part A)"><img src="assets/set1-mosaic.png" width="1883" height="2097" alt="Set 1 · manual (Part A)" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 1 · manual (Part A)
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/set1-mosaic-auto.png" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1 · automatic (RANSAC)"><img src="assets/set1-mosaic-auto.png" width="1887" height="2103" alt="Set 1 · automatic (RANSAC)" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 1 · automatic (RANSAC)
+</figcaption>
+</figure>
+</div>
+<p><strong>Set 2</strong></p>
+<div class="result-grid cols-2">
+<figure class="figure">
+<a href="assets/set2-mosaic.png" class="lightbox" data-gallery="set2" data-glightbox="description: Set 2 · manual (Part A)"><img src="assets/set2-mosaic.png" width="1807" height="2068" alt="Set 2 · manual (Part A)" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 2 · manual (Part A)
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/set2-mosaic-auto.png" class="lightbox" data-gallery="set2" data-glightbox="description: Set 2 · automatic (RANSAC)"><img src="assets/set2-mosaic-auto.png" width="1798" height="2068" alt="Set 2 · automatic (RANSAC)" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 2 · automatic (RANSAC)
+</figcaption>
+</figure>
+</div>
+<p><strong>Set 3</strong></p>
+<div class="result-grid cols-2">
+<figure class="figure">
+<a href="assets/set3-mosaic.png" class="lightbox" data-gallery="set3" data-glightbox="description: Set 3 · manual (Part A)"><img src="assets/set3-mosaic.png" width="1704" height="2047" alt="Set 3 · manual (Part A)" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 3 · manual (Part A)
+</figcaption>
+</figure>
+<figure class="figure">
+<a href="assets/set3-mosaic-auto.png" class="lightbox" data-gallery="set3" data-glightbox="description: Set 3 · automatic (RANSAC)"><img src="assets/set3-mosaic-auto.png" width="1663" height="1950" alt="Set 3 · automatic (RANSAC)" loading="lazy" decoding="async" class="figure-img"></a>
+<figcaption>
+Set 3 · automatic (RANSAC)
+</figcaption>
+</figure>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

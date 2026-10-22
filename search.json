@@ -33,5 +33,33 @@
     "title": "CS 180 Project 4: Image Warping and Mosaicing",
     "section": "",
     "text": "Keep the right photo fixed and warp the left photo into its frame, on a canvas that fits both.\nGive each image a weight that is 1 at its center and falls to 0 at its edges (a distance transform), warped along with the image.\nBlend in two bands so that small misalignments don’t show up as doubled edges:\n\nLow band (Gaussian blur, \\(\\sigma = 8\\)): weighted average, so brightness changes fade across the overlap.\nHigh band (image minus blur): taken from whichever image has the larger weight at each pixel.\n\nAdd the two bands to get the mosaic.\n\nSet 1: Visitor Center sign\n\n\n\n\nLeft: road and crosswalk\n\n\n\n\n\nRight (reference): sign and olive tree at the corner\n\n\n\n\n\n\nSet 1 mosaic\n\n\nSet 2: Olive tree path\n\n\n\n\nLeft: path through the olive trees\n\n\n\n\n\nRight (reference): olive trees and black louvered building\n\n\n\n\n\n\nSet 2 mosaic\n\n\nSet 3: Apartment walkway\n\n\n\n\nLeft: left building and walkway\n\n\n\n\n\nRight (reference): walkway and right building\n\n\n\n\n\n\nSet 3 mosaic"
+  },
+  {
+    "objectID": "index.html#harris",
+    "href": "index.html#harris",
+    "title": "CS 180 Project 4: Image Warping and Mosaicing",
+    "section": "B.1 Harris Corners and ANMS",
+    "text": "B.1 Harris Corners and ANMS\nI run the course’s harris.py on the grayscale image and drop corners with strength below 0.01, which are noise in flat sky. ANMS gives each corner a suppression radius, the distance to the nearest clearly stronger corner,\n\\[\nr_i = \\min_j \\lVert \\mathbf x_i - \\mathbf x_j \\rVert \\ \\ \\text{s.t.}\\ \\ f(\\mathbf x_i) &lt; 0.9\\, f(\\mathbf x_j),\n\\]\nand keeps the 500 corners with the largest \\(r_i\\). The 500 strongest corners pile into the tree canopies; ANMS spreads them over the whole photo.\n\n\n\nSet 1, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)\n\n\n\n\n\nSet 2, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)\n\n\n\n\n\nSet 3, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)"
+  },
+  {
+    "objectID": "index.html#descriptors",
+    "href": "index.html#descriptors",
+    "title": "CS 180 Project 4: Image Warping and Mosaicing",
+    "section": "B.2 Feature Descriptors",
+    "text": "B.2 Feature Descriptors\nEach descriptor is an axis-aligned 8×8 grid sampled every 5 px from a 40×40 window of the blurred (\\(\\sigma = 2.5\\)) grayscale image, then normalized to mean 0 and standard deviation 1.\n\n\n\nSet 1: 40×40 windows around eight ANMS corners (top) and their normalized 8×8 descriptors (bottom)"
+  },
+  {
+    "objectID": "index.html#matching",
+    "href": "index.html#matching",
+    "title": "CS 180 Project 4: Image Warping and Mosaicing",
+    "section": "B.3 Feature Matching",
+    "text": "B.3 Feature Matching\nEach left-photo descriptor is matched to its nearest reference descriptor if the ratio of squared distances to the first and second nearest neighbors is below 0.5 (Lowe’s test; the paper’s Figure 6b shows wrong matches dominating above about 0.5). This gives 144, 166 and 236 matches. The few crossing lines are outliers that RANSAC removes.\n\n\n\nSet 1: matches that pass the ratio test, left photo to reference\n\n\n\n\n\nSet 2: matches that pass the ratio test, left photo to reference\n\n\n\n\n\nSet 3: matches that pass the ratio test, left photo to reference"
+  },
+  {
+    "objectID": "index.html#ransac",
+    "href": "index.html#ransac",
+    "title": "CS 180 Project 4: Image Warping and Mosaicing",
+    "section": "B.4 RANSAC and Automatic Mosaics",
+    "text": "B.4 RANSAC and Automatic Mosaics\nEach of 2000 iterations fits an exact homography to 4 random matches and counts the matches it maps within 3 px. The final \\(H\\) is the least-squares fit to the largest inlier set (111, 132 and 160 inliers). The mosaics use the A.4 warp and blend.\nThe automatic mosaics match the manual ones, with no ghosting along the overlap.\nSet 1\n\n\n\n\nSet 1 · manual (Part A)\n\n\n\n\n\nSet 1 · automatic (RANSAC)\n\n\n\nSet 2\n\n\n\n\nSet 2 · manual (Part A)\n\n\n\n\n\nSet 2 · automatic (RANSAC)\n\n\n\nSet 3\n\n\n\n\nSet 3 · manual (Part A)\n\n\n\n\n\nSet 3 · automatic (RANSAC)"
   }
 ]
