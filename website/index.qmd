@@ -297,7 +297,7 @@ Each descriptor is a coarse copy of its window, so it still matches if the corne
 
 ## B.3 Feature Matching {#matching}
 
-Each feature is matched to its nearest neighbor in the other photo. I keep the match only if it is much closer than the second-nearest neighbor (Lowe's ratio below 0.5, picked from Figure 6b of the paper). The lines connect the matched features:
+Each feature is matched to its nearest neighbor in the other photo. I keep the match only if it is much closer than the second-nearest neighbor (ratio threshold 0.5, from Figure 6b). The lines connect the matched features:
 
 {{< include _figures/matches-set1.qmd >}}
 
