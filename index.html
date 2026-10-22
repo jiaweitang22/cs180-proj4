@@ -41,7 +41,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-41b905962474d0f59eee21bdb6423a18.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-6925463af6acf52897ebc0c268b63afa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -186,10 +186,10 @@ window.Quarto = {
   </ul></li>
   <li><a href="#part-b" id="toc-part-b" class="nav-link" data-scroll-target="#part-b">Part B: Feature Matching for Autostitching</a>
   <ul class="collapse">
-  <li><a href="#harris" id="toc-harris" class="nav-link" data-scroll-target="#harris">B.1 Harris Corners and ANMS</a></li>
-  <li><a href="#descriptors" id="toc-descriptors" class="nav-link" data-scroll-target="#descriptors">B.2 Feature Descriptors</a></li>
+  <li><a href="#harris" id="toc-harris" class="nav-link" data-scroll-target="#harris">B.1 Harris Corner Detection</a></li>
+  <li><a href="#descriptors" id="toc-descriptors" class="nav-link" data-scroll-target="#descriptors">B.2 Feature Descriptor Extraction</a></li>
   <li><a href="#matching" id="toc-matching" class="nav-link" data-scroll-target="#matching">B.3 Feature Matching</a></li>
-  <li><a href="#ransac" id="toc-ransac" class="nav-link" data-scroll-target="#ransac">B.4 RANSAC and Automatic Mosaics</a></li>
+  <li><a href="#ransac" id="toc-ransac" class="nav-link" data-scroll-target="#ransac">B.4 RANSAC for Robust Homography</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -696,46 +696,31 @@ Set 3 mosaic
 </section>
 <section id="part-b" class="level1">
 <h1>Part B: Feature Matching for Autostitching</h1>
-<p>Part B finds the correspondences automatically, following the MOPS paper (Brown et al.) at a single scale and without rotation. It uses the same three pairs as Part A.</p>
+<p>Clicking correspondences by hand in Part A was slow and never exact. Part B finds them automatically, following the MOPS paper by Brown et al.&nbsp;at a single scale.</p>
 <section id="harris" class="level2">
-<h2 class="anchored" data-anchor-id="harris">B.1 Harris Corners and ANMS</h2>
-<p>I run the course’s <code>harris.py</code> on the grayscale image and drop corners with strength below 0.01, which are noise in flat sky. ANMS gives each corner a suppression radius, the distance to the nearest clearly stronger corner,</p>
-<p><span class="math display">\[
-r_i = \min_j \lVert \mathbf x_i - \mathbf x_j \rVert \ \ \text{s.t.}\ \ f(\mathbf x_i) &lt; 0.9\, f(\mathbf x_j),
-\]</span></p>
-<p>and keeps the 500 corners with the largest <span class="math inline">\(r_i\)</span>. The 500 strongest corners pile into the tree canopies; ANMS spreads them over the whole photo.</p>
+<h2 class="anchored" data-anchor-id="harris">B.1 Harris Corner Detection</h2>
+<p>The course’s <code>harris.py</code> finds over 40,000 corners in this photo (left), far too many to match. Keeping only the 500 strongest (middle) piles them into the trees. ANMS instead keeps a corner only if no much stronger corner is nearby, so its 500 corners (right) cover the whole photo.</p>
 <figure class="course-figure figure">
-<a href="assets/set1-harris.png" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)"><img src="assets/set1-harris.png" width="1425" height="977" alt="Set 1, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)" loading="lazy" decoding="async" class="figure-img"></a>
+<a href="assets/set1-harris.png" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1, left photo: all Harris corners, the 500 strongest, and the 500 chosen by ANMS"><img src="assets/set1-harris.png" width="2122" height="973" alt="Set 1, left photo: all Harris corners, the 500 strongest, and the 500 chosen by ANMS" loading="lazy" decoding="async" class="figure-img"></a>
 <figcaption>
-Set 1, left photo: the 500 strongest Harris corners (left) vs.&nbsp;500 corners chosen by ANMS (right)
-</figcaption>
-</figure>
-<figure class="course-figure figure">
-<a href="assets/set2-harris.png" class="lightbox" data-gallery="set2" data-glightbox="description: Set 2, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)"><img src="assets/set2-harris.png" width="1425" height="977" alt="Set 2, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)" loading="lazy" decoding="async" class="figure-img"></a>
-<figcaption>
-Set 2, left photo: the 500 strongest Harris corners (left) vs.&nbsp;500 corners chosen by ANMS (right)
-</figcaption>
-</figure>
-<figure class="course-figure figure">
-<a href="assets/set3-harris.png" class="lightbox" data-gallery="set3" data-glightbox="description: Set 3, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)"><img src="assets/set3-harris.png" width="1425" height="977" alt="Set 3, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)" loading="lazy" decoding="async" class="figure-img"></a>
-<figcaption>
-Set 3, left photo: the 500 strongest Harris corners (left) vs.&nbsp;500 corners chosen by ANMS (right)
+Set 1, left photo: all Harris corners, the 500 strongest, and the 500 chosen by ANMS
 </figcaption>
 </figure>
 </section>
 <section id="descriptors" class="level2">
-<h2 class="anchored" data-anchor-id="descriptors">B.2 Feature Descriptors</h2>
-<p>Each descriptor is an axis-aligned 8×8 grid sampled every 5 px from a 40×40 window of the blurred (<span class="math inline">\(\sigma = 2.5\)</span>) grayscale image, then normalized to mean 0 and standard deviation 1.</p>
+<h2 class="anchored" data-anchor-id="descriptors">B.2 Feature Descriptor Extraction</h2>
+<p>Around each ANMS corner I blur a 40×40 window, sample it every 5 px into an 8×8 patch, and normalize the patch to mean 0 and standard deviation 1. Here are a few from Set 1:</p>
 <figure class="course-figure figure">
 <a href="assets/set1-descriptors.png" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1: 40×40 windows around eight ANMS corners (top) and their normalized 8×8 descriptors (bottom)"><img src="assets/set1-descriptors.png" width="1890" height="536" alt="Set 1: 40×40 windows around eight ANMS corners (top) and their normalized 8×8 descriptors (bottom)" loading="lazy" decoding="async" class="figure-img"></a>
 <figcaption>
 Set 1: 40×40 windows around eight ANMS corners (top) and their normalized 8×8 descriptors (bottom)
 </figcaption>
 </figure>
+<p>Each descriptor is a coarse copy of its window, so it still matches if the corner is off by a pixel or two, and the normalization makes it ignore brightness and contrast changes.</p>
 </section>
 <section id="matching" class="level2">
 <h2 class="anchored" data-anchor-id="matching">B.3 Feature Matching</h2>
-<p>Each left-photo descriptor is matched to its nearest reference descriptor if the ratio of squared distances to the first and second nearest neighbors is below 0.5 (Lowe’s test; the paper’s Figure 6b shows wrong matches dominating above about 0.5). This gives 144, 166 and 236 matches. The few crossing lines are outliers that RANSAC removes.</p>
+<p>Each feature is matched to its nearest neighbor in the other photo. I keep the match only if it is much closer than the second-nearest neighbor (Lowe’s ratio below 0.5, picked from Figure 6b of the paper). The lines connect the matched features:</p>
 <figure class="course-figure figure">
 <a href="assets/set1-matches.png" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1: matches that pass the ratio test, left photo to reference"><img src="assets/set1-matches.png" width="1242" height="838" alt="Set 1: matches that pass the ratio test, left photo to reference" loading="lazy" decoding="async" class="figure-img"></a>
 <figcaption>
@@ -754,11 +739,11 @@ Set 2: matches that pass the ratio test, left photo to reference
 Set 3: matches that pass the ratio test, left photo to reference
 </figcaption>
 </figure>
+<p>Most lines run parallel, so most matches are right, but a few cross and are clearly wrong.</p>
 </section>
 <section id="ransac" class="level2">
-<h2 class="anchored" data-anchor-id="ransac">B.4 RANSAC and Automatic Mosaics</h2>
-<p>Each of 2000 iterations fits an exact homography to 4 random matches and counts the matches it maps within 3 px. The final <span class="math inline">\(H\)</span> is the least-squares fit to the largest inlier set (111, 132 and 160 inliers). The mosaics use the A.4 warp and blend.</p>
-<p>The automatic mosaics match the manual ones, with no ghosting along the overlap.</p>
+<h2 class="anchored" data-anchor-id="ransac">B.4 RANSAC for Robust Homography</h2>
+<p>To throw out the wrong matches, RANSAC repeatedly fits a homography to 4 random matches and keeps the one that the most matches agree with (within 3 px). The final homography is fit to all of those matches. Here are the manual mosaics from Part A next to the automatic ones:</p>
 <p><strong>Set 1</strong></p>
 <div class="result-grid cols-2">
 <figure class="figure">
@@ -804,6 +789,7 @@ Set 3 · automatic (RANSAC)
 </figcaption>
 </figure>
 </div>
+<p>The automatic mosaics line up as well as the manual ones, with no clicking.</p>
 
 
 </section>
