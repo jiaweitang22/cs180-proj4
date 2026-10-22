@@ -41,7 +41,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-41b905962474d0f59eee21bdb6423a18.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-6925463af6acf52897ebc0c268b63afa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -313,15 +313,75 @@ Set 2: numbered correspondences between the left photo and the reference
 Set 3: numbered correspondences between the left photo and the reference
 </figcaption>
 </figure>
-<p><strong>Example (Set 1).</strong> The first correspondence, <span class="math inline">\((779.17, 693.52) \to (408.11, 672.04)\)</span>, gives the first two rows of the <span class="math inline">\(30 \times 8\)</span> system:</p>
+<p><strong>Set 1 system.</strong> Its 15 correspondences give the <span class="math inline">\(30 \times 8\)</span> system (rows <span class="math inline">\(2k-1\)</span> and <span class="math inline">\(2k\)</span> come from correspondence <span class="math inline">\(k\)</span>):</p>
 <p><span class="math display">\[
+\small
 \begin{bmatrix}
 779.17 &amp; 693.52 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -317987.07 &amp; -283032.45 \\
-0 &amp; 0 &amp; 0 &amp; 779.17 &amp; 693.52 &amp; 1 &amp; -523633.41 &amp; -466073.18
+0 &amp; 0 &amp; 0 &amp; 779.17 &amp; 693.52 &amp; 1 &amp; -523633.41 &amp; -466073.18 \\
+926.29 &amp; 690.92 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -507671.76 &amp; -378672.52 \\
+0 &amp; 0 &amp; 0 &amp; 926.29 &amp; 690.92 &amp; 1 &amp; -622503.93 &amp; -464325.88 \\
+788.28 &amp; 912.25 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -334538.15 &amp; -387149.78 \\
+0 &amp; 0 &amp; 0 &amp; 788.28 &amp; 912.25 &amp; 1 &amp; -702688.56 &amp; -813197.90 \\
+910.67 &amp; 916.81 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -491998.57 &amp; -495315.77 \\
+0 &amp; 0 &amp; 0 &amp; 910.67 &amp; 916.81 &amp; 1 &amp; -808228.73 &amp; -813678.04 \\
+676.97 &amp; 879.70 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -208852.01 &amp; -271396.25 \\
+0 &amp; 0 &amp; 0 &amp; 676.97 &amp; 879.70 &amp; 1 &amp; -585396.27 &amp; -760702.98 \\
+514.87 &amp; 892.72 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -62314.72 &amp; -108045.90 \\
+0 &amp; 0 &amp; 0 &amp; 514.87 &amp; 892.72 &amp; 1 &amp; -457961.42 &amp; -794047.66 \\
+1036.31 &amp; 663.58 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -665787.72 &amp; -426323.61 \\
+0 &amp; 0 &amp; 0 &amp; 1036.31 &amp; 663.58 &amp; 1 &amp; -670803.46 &amp; -429535.33 \\
+1040.21 &amp; 803.54 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -675751.62 &amp; -522003.69 \\
+0 &amp; 0 &amp; 0 &amp; 1040.21 &amp; 803.54 &amp; 1 &amp; -807400.60 &amp; -623699.71 \\
+438.71 &amp; 867.33 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -12542.72 &amp; -24796.96 \\
+0 &amp; 0 &amp; 0 &amp; 438.71 &amp; 867.33 &amp; 1 &amp; -379365.70 &amp; -750006.27 \\
+721.88 &amp; 125.22 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -233520.96 &amp; -40507.42 \\
+0 &amp; 0 &amp; 0 &amp; 721.88 &amp; 125.22 &amp; 1 &amp; -59374.63 &amp; -10299.34 \\
+873.56 &amp; 386.26 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -424183.26 &amp; -187560.13 \\
+0 &amp; 0 &amp; 0 &amp; 873.56 &amp; 386.26 &amp; 1 &amp; -322631.91 &amp; -142657.41 \\
+954.28 &amp; 325.72 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -536677.53 &amp; -183181.67 \\
+0 &amp; 0 &amp; 0 &amp; 954.28 &amp; 325.72 &amp; 1 &amp; -302754.87 &amp; -103337.93 \\
+1143.72 &amp; 131.73 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -827870.28 &amp; -95351.44 \\
+0 &amp; 0 &amp; 0 &amp; 1143.72 &amp; 131.73 &amp; 1 &amp; -178203.01 &amp; -20524.85 \\
+577.17 &amp; 1133.84 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -117575.30 &amp; -230974.55 \\
+0 &amp; 0 &amp; 0 &amp; 577.17 &amp; 1133.84 &amp; 1 &amp; -657650.58 &amp; -1291942.65 \\
+550.45 &amp; 1112.23 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; -95646.19 &amp; -193261.08 \\
+0 &amp; 0 &amp; 0 &amp; 550.45 &amp; 1112.23 &amp; 1 &amp; -616454.46 &amp; -1245597.50
 \end{bmatrix}
 \mathbf h
 =
-\begin{bmatrix} 408.11 \\ 672.04 \end{bmatrix}.
+\begin{bmatrix}
+408.11 \\
+672.04 \\
+548.07 \\
+672.04 \\
+424.39 \\
+891.42 \\
+540.26 \\
+887.51 \\
+308.51 \\
+864.73 \\
+121.03 \\
+889.47 \\
+642.46 \\
+647.30 \\
+649.63 \\
+776.19 \\
+28.59 \\
+864.73 \\
+323.49 \\
+82.25 \\
+485.58 \\
+369.33 \\
+562.39 \\
+317.26 \\
+723.84 \\
+155.81 \\
+203.71 \\
+1139.44 \\
+173.76 \\
+1119.91
+\end{bmatrix}.
 \]</span></p>
 <p>Recovered homographies (left photo → right photo):</p>
 <p><span class="math display">\[
