@@ -106,11 +106,8 @@ for key, (title, original) in RECTIFY.items():
     write_figure(f"zoom-{key}", wide_figure(f"outputs/{key}_zoom.png", f"{key}-zoom",
                                             f"{title}: nearest neighbor (left) vs. bilinear (right), zoomed"))
 
-# Part B (code/partb.ipynb): same sets, with the left photo shown for corners and descriptors.
+# Part B (code/partb.ipynb): same sets; corners and descriptors are shown for Set 1 only.
 for key, (title, *_) in SETS.items():
-    write_figure(f"harris-{key}", wide_figure(
-        f"outputs/{key}_1_harris.png", f"{key}-harris",
-        f"{title}, left photo: all Harris corners, the 500 strongest, and the 500 chosen by ANMS"))
     write_figure(f"matches-{key}", wide_figure(
         f"outputs/{key}_3_matches.png", f"{key}-matches",
         f"{title}: matches that pass the ratio test, left photo to reference"))
@@ -118,6 +115,9 @@ for key, (title, *_) in SETS.items():
         (f"outputs/{key}_mosaic.png", f"{key}-mosaic", f"{title} · manual (Part A)"),
         (f"outputs/{key}_4_mosaic_auto.png", f"{key}-mosaic-auto", f"{title} · automatic (RANSAC)"),
     ]))
+write_figure("harris-set1", wide_figure(
+    "outputs/set1_1_harris.png", "set1-harris",
+    "Set 1, left photo: all Harris corners, the 500 strongest, and the 500 chosen by ANMS"))
 write_figure("descriptors-set1", wide_figure(
     "outputs/set1_2_descriptors.png", "set1-descriptors",
     "Set 1: 40×40 windows around eight ANMS corners (top) and their normalized 8×8 descriptors (bottom)"))

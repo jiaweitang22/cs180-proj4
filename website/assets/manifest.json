@@ -193,14 +193,6 @@
       ]
     },
     {
-      "file": "set1-harris.png",
-      "source": "outputs/set1_1_harris.png",
-      "size": [
-        2122,
-        973
-      ]
-    },
-    {
       "file": "set1-matches.png",
       "source": "outputs/set1_3_matches.png",
       "size": [
@@ -214,14 +206,6 @@
       "size": [
         1887,
         2103
-      ]
-    },
-    {
-      "file": "set2-harris.png",
-      "source": "outputs/set2_1_harris.png",
-      "size": [
-        2122,
-        973
       ]
     },
     {
@@ -241,14 +225,6 @@
       ]
     },
     {
-      "file": "set3-harris.png",
-      "source": "outputs/set3_1_harris.png",
-      "size": [
-        2122,
-        973
-      ]
-    },
-    {
       "file": "set3-matches.png",
       "source": "outputs/set3_3_matches.png",
       "size": [
@@ -262,6 +238,14 @@
       "size": [
         1663,
         1950
+      ]
+    },
+    {
+      "file": "set1-harris.png",
+      "source": "outputs/set1_1_harris.png",
+      "size": [
+        2122,
+        973
       ]
     },
     {

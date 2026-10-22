@@ -279,33 +279,25 @@ Bilinear is about 1.4–2× slower, since it reads four pixels instead of one. Z
 
 # Part B: Feature Matching for Autostitching {#part-b}
 
-Part B finds the correspondences automatically, following the MOPS paper (Brown et al.) at a single scale and without rotation. It uses the same three pairs as Part A.
+Clicking correspondences by hand in Part A was slow and never exact. Part B finds them automatically, following the MOPS paper by Brown et al. at a single scale.
 
-## B.1 Harris Corners and ANMS {#harris}
+## B.1 Harris Corner Detection {#harris}
 
-I run the course's `harris.py` on the grayscale image and drop corners with strength below 0.01, which are noise in flat sky. ANMS gives each corner a suppression radius, the distance to the nearest clearly stronger corner,
-
-$$
-r_i = \min_j \lVert \mathbf x_i - \mathbf x_j \rVert \ \ \text{s.t.}\ \ f(\mathbf x_i) < 0.9\, f(\mathbf x_j),
-$$
-
-and keeps the 500 corners with the largest $r_i$. Each figure shows all detected corners, the 500 strongest (piled into the tree canopies), and the 500 chosen by ANMS (spread over the whole photo).
+The course's `harris.py` finds over 40,000 corners in this photo (left), far too many to match. Keeping only the 500 strongest (middle) piles them into the trees. ANMS instead keeps a corner only if no much stronger corner is nearby, so its 500 corners (right) cover the whole photo.
 
 {{< include _figures/harris-set1.qmd >}}
 
-{{< include _figures/harris-set2.qmd >}}
+## B.2 Feature Descriptor Extraction {#descriptors}
 
-{{< include _figures/harris-set3.qmd >}}
-
-## B.2 Feature Descriptors {#descriptors}
-
-Each descriptor is an axis-aligned 8×8 grid sampled every 5 px from a 40×40 window of the blurred ($\sigma = 2.5$) grayscale image, then normalized to mean 0 and standard deviation 1.
+Around each ANMS corner I blur a 40×40 window, sample it every 5 px into an 8×8 patch, and normalize the patch to mean 0 and standard deviation 1. Here are a few from Set 1:
 
 {{< include _figures/descriptors-set1.qmd >}}
 
+Each descriptor is a coarse copy of its window, so it still matches if the corner is off by a pixel or two, and the normalization makes it ignore brightness and contrast changes.
+
 ## B.3 Feature Matching {#matching}
 
-Each left-photo descriptor is matched to its nearest reference descriptor if the ratio of squared distances to the first and second nearest neighbors is below 0.5 (Lowe's test; the paper's Figure 6b shows wrong matches dominating above about 0.5). This gives 144, 166 and 236 matches. The few crossing lines are outliers that RANSAC removes.
+Each feature is matched to its nearest neighbor in the other photo. I keep the match only if it is much closer than the second-nearest neighbor (Lowe's ratio below 0.5, picked from Figure 6b of the paper). The lines connect the matched features:
 
 {{< include _figures/matches-set1.qmd >}}
 
@@ -313,14 +305,16 @@ Each left-photo descriptor is matched to its nearest reference descriptor if the
 
 {{< include _figures/matches-set3.qmd >}}
 
-## B.4 RANSAC and Automatic Mosaics {#ransac}
+Most lines run parallel, so most matches are right, but a few cross and are clearly wrong.
 
-Each of 2000 iterations fits an exact homography to 4 random matches and counts the matches it maps within 3 px. The final $H$ is the least-squares fit to the largest inlier set (111, 132 and 160 inliers). The mosaics use the A.4 warp and blend.
+## B.4 RANSAC for Robust Homography {#ransac}
 
-The automatic mosaics match the manual ones, with no ghosting along the overlap.
+To throw out the wrong matches, RANSAC repeatedly fits a homography to 4 random matches and keeps the one that the most matches agree with (within 3 px). The final homography is fit to all of those matches. Here are the manual mosaics from Part A next to the automatic ones:
 
 {{< include _figures/auto-mosaic-set1.qmd >}}
 
 {{< include _figures/auto-mosaic-set2.qmd >}}
 
 {{< include _figures/auto-mosaic-set3.qmd >}}
+
+The automatic mosaics line up as well as the manual ones, with no clicking.
