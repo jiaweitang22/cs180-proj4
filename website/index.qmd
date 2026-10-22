@@ -8,7 +8,7 @@ date: "2026-10-21"
 
 ## A.1 Shooting the Pictures {#shooting}
 
-Three pairs shot in Cupertino with the iPhone 17 Pro's 1× camera. For each pair I kept the phone in place and only rotated it (about 17–19°), so the two photos share a center of projection and are related by a homography. The photos overlap by 64–69%.
+Three pairs shot in Cupertino with the iPhone 17 Pro's 1× camera. For each pair I kept the phone in place and only rotated it (about 17–19°), so the two photos share a center of projection and are related by a homography. The photos overlap by 63–69%.
 
 {{< include _figures/photos-set1.qmd >}}
 
@@ -261,7 +261,7 @@ Bilinear is about 2× slower, since it reads four pixels instead of one. Zoomed 
 ## A.4 Blending into a Mosaic {#mosaics}
 
 1. Keep the right photo fixed and warp the left photo into its frame, on a canvas that fits both.
-2. Give each image a weight that is 1 at its center and falls to 0 at its edges (a distance transform), warped along with the image.
+2. Give each image a weight that is 1 at its center and falls toward 0 at its edges (a distance transform), warped along with the image.
 3. Blend in two bands so that small misalignments don't show up as doubled edges:
    - **Low band** (Gaussian blur, $\sigma = 8$): weighted average, so brightness changes fade across the overlap.
    - **High band** (image minus blur): taken from whichever image has the larger weight at each pixel.
