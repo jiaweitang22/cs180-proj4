@@ -53,7 +53,7 @@
     "href": "index.html#matching",
     "title": "CS 180 Project 4: Image Warping and Mosaicing",
     "section": "B.3 Feature Matching",
-    "text": "B.3 Feature Matching\nEach feature is matched to its nearest neighbor in the other photo. I keep the match only if it is much closer than the second-nearest neighbor (Lowe’s ratio below 0.5, picked from Figure 6b of the paper). The lines connect the matched features:\n\n\n\nSet 1: matches that pass the ratio test, left photo to reference\n\n\n\n\n\nSet 2: matches that pass the ratio test, left photo to reference\n\n\n\n\n\nSet 3: matches that pass the ratio test, left photo to reference\n\n\nMost lines run parallel, so most matches are right, but a few cross and are clearly wrong."
+    "text": "B.3 Feature Matching\nEach feature is matched to its nearest neighbor in the other photo. I keep the match only if it is much closer than the second-nearest neighbor (ratio threshold 0.5, from Figure 6b). The lines connect the matched features:\n\n\n\nSet 1: matches that pass the ratio test, left photo to reference\n\n\n\n\n\nSet 2: matches that pass the ratio test, left photo to reference\n\n\n\n\n\nSet 3: matches that pass the ratio test, left photo to reference\n\n\nMost lines run parallel, so most matches are right, but a few cross and are clearly wrong."
   },
   {
     "objectID": "index.html#ransac",

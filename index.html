@@ -720,7 +720,7 @@ Set 1: 40×40 windows around eight ANMS corners (top) and their normalized 8×8 
 </section>
 <section id="matching" class="level2">
 <h2 class="anchored" data-anchor-id="matching">B.3 Feature Matching</h2>
-<p>Each feature is matched to its nearest neighbor in the other photo. I keep the match only if it is much closer than the second-nearest neighbor (Lowe’s ratio below 0.5, picked from Figure 6b of the paper). The lines connect the matched features:</p>
+<p>Each feature is matched to its nearest neighbor in the other photo. I keep the match only if it is much closer than the second-nearest neighbor (ratio threshold 0.5, from Figure 6b). The lines connect the matched features:</p>
 <figure class="course-figure figure">
 <a href="assets/set1-matches.png" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1: matches that pass the ratio test, left photo to reference"><img src="assets/set1-matches.png" width="1242" height="838" alt="Set 1: matches that pass the ratio test, left photo to reference" loading="lazy" decoding="async" class="figure-img"></a>
 <figcaption>
