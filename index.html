@@ -576,38 +576,38 @@ Rectified · bilinear
 <tr class="odd">
 <td>Poster frame</td>
 <td>1543 × 2084</td>
-<td>0.25 s</td>
-<td>0.45 s</td>
+<td>0.24 s</td>
+<td>0.46 s</td>
 </tr>
 <tr class="even">
 <td>Flyer</td>
 <td>2580 × 3386</td>
-<td>0.69 s</td>
-<td>1.19 s</td>
+<td>0.72 s</td>
+<td>1.26 s</td>
 </tr>
 <tr class="odd">
 <td>Menu board</td>
 <td>1856 × 2284</td>
-<td>0.37 s</td>
-<td>0.77 s</td>
+<td>0.35 s</td>
+<td>0.78 s</td>
 </tr>
 </tbody>
 </table>
-<p>Bilinear is about 1.7–2× slower, since it reads four pixels instead of one. Zoomed in, nearest neighbor gives jagged, blocky letter edges where the photo is enlarged, while bilinear stays smooth and only slightly softer. The quality is worth the cost, so I use bilinear for the mosaics.</p>
+<p>Bilinear is about 2× slower, since it reads four pixels instead of one. Zoomed in, nearest neighbor gives jagged, blocky letter edges where the photo is enlarged, while bilinear stays smooth and only slightly softer. The quality is worth the cost, so I use bilinear for the mosaics.</p>
 <figure class="course-figure figure">
-<a href="assets/rect1-zoom.png" class="lightbox" data-gallery="rect1" data-glightbox="description: Rectification 1: poster frame: nearest neighbor (left) vs. bilinear (right), zoomed"><img src="assets/rect1-zoom.png" width="1424" height="695" alt="Rectification 1: poster frame: nearest neighbor (left) vs. bilinear (right), zoomed" loading="lazy" decoding="async" class="figure-img"></a>
+<a href="assets/rect1-zoom.png" class="lightbox" data-gallery="rect1" data-glightbox="description: Rectification 1: poster frame: nearest neighbor (left) vs. bilinear (right), zoomed"><img src="assets/rect1-zoom.png" width="1425" height="695" alt="Rectification 1: poster frame: nearest neighbor (left) vs. bilinear (right), zoomed" loading="lazy" decoding="async" class="figure-img"></a>
 <figcaption>
 Rectification 1: poster frame: nearest neighbor (left) vs.&nbsp;bilinear (right), zoomed
 </figcaption>
 </figure>
 <figure class="course-figure figure">
-<a href="assets/rect2-zoom.png" class="lightbox" data-gallery="rect2" data-glightbox="description: Rectification 2: flyer: nearest neighbor (left) vs. bilinear (right), zoomed"><img src="assets/rect2-zoom.png" width="1424" height="695" alt="Rectification 2: flyer: nearest neighbor (left) vs. bilinear (right), zoomed" loading="lazy" decoding="async" class="figure-img"></a>
+<a href="assets/rect2-zoom.png" class="lightbox" data-gallery="rect2" data-glightbox="description: Rectification 2: flyer: nearest neighbor (left) vs. bilinear (right), zoomed"><img src="assets/rect2-zoom.png" width="1425" height="695" alt="Rectification 2: flyer: nearest neighbor (left) vs. bilinear (right), zoomed" loading="lazy" decoding="async" class="figure-img"></a>
 <figcaption>
 Rectification 2: flyer: nearest neighbor (left) vs.&nbsp;bilinear (right), zoomed
 </figcaption>
 </figure>
 <figure class="course-figure figure">
-<a href="assets/rect3-zoom.png" class="lightbox" data-gallery="rect3" data-glightbox="description: Rectification 3: menu board: nearest neighbor (left) vs. bilinear (right), zoomed"><img src="assets/rect3-zoom.png" width="1424" height="695" alt="Rectification 3: menu board: nearest neighbor (left) vs. bilinear (right), zoomed" loading="lazy" decoding="async" class="figure-img"></a>
+<a href="assets/rect3-zoom.png" class="lightbox" data-gallery="rect3" data-glightbox="description: Rectification 3: menu board: nearest neighbor (left) vs. bilinear (right), zoomed"><img src="assets/rect3-zoom.png" width="1425" height="695" alt="Rectification 3: menu board: nearest neighbor (left) vs. bilinear (right), zoomed" loading="lazy" decoding="async" class="figure-img"></a>
 <figcaption>
 Rectification 3: menu board: nearest neighbor (left) vs.&nbsp;bilinear (right), zoomed
 </figcaption>
@@ -698,9 +698,9 @@ Set 3 mosaic
 <h2 class="anchored" data-anchor-id="harris">B.1 Harris Corner Detection</h2>
 <p>The course’s <code>harris.py</code> finds over 40,000 corners in this photo (left), far too many to match. Keeping only the 500 strongest (middle) piles them into the trees. ANMS instead keeps a corner only if no much stronger corner is nearby, so its 500 corners (right) cover the whole photo.</p>
 <figure class="course-figure figure">
-<a href="assets/set1-harris.png" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1, left photo: all Harris corners, the 500 strongest, and the 500 chosen by ANMS"><img src="assets/set1-harris.png" width="2122" height="973" alt="Set 1, left photo: all Harris corners, the 500 strongest, and the 500 chosen by ANMS" loading="lazy" decoding="async" class="figure-img"></a>
+<a href="assets/set1-harris.png" class="lightbox" data-gallery="set1" data-glightbox="description: Set 1, left photo: Harris corners above 0.01, the 500 strongest, and the 500 chosen by ANMS"><img src="assets/set1-harris.png" width="2122" height="973" alt="Set 1, left photo: Harris corners above 0.01, the 500 strongest, and the 500 chosen by ANMS" loading="lazy" decoding="async" class="figure-img"></a>
 <figcaption>
-Set 1, left photo: all Harris corners, the 500 strongest, and the 500 chosen by ANMS
+Set 1, left photo: Harris corners above 0.01, the 500 strongest, and the 500 chosen by ANMS
 </figcaption>
 </figure>
 </section>
