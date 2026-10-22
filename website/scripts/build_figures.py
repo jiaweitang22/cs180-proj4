@@ -110,7 +110,7 @@ for key, (title, original) in RECTIFY.items():
 for key, (title, *_) in SETS.items():
     write_figure(f"harris-{key}", wide_figure(
         f"outputs/{key}_1_harris.png", f"{key}-harris",
-        f"{title}, left photo: the 500 strongest Harris corners (left) vs. 500 corners chosen by ANMS (right)"))
+        f"{title}, left photo: all Harris corners, the 500 strongest, and the 500 chosen by ANMS"))
     write_figure(f"matches-{key}", wide_figure(
         f"outputs/{key}_3_matches.png", f"{key}-matches",
         f"{title}: matches that pass the ratio test, left photo to reference"))

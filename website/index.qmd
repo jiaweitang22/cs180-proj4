@@ -289,7 +289,7 @@ $$
 r_i = \min_j \lVert \mathbf x_i - \mathbf x_j \rVert \ \ \text{s.t.}\ \ f(\mathbf x_i) < 0.9\, f(\mathbf x_j),
 $$
 
-and keeps the 500 corners with the largest $r_i$. The 500 strongest corners pile into the tree canopies; ANMS spreads them over the whole photo.
+and keeps the 500 corners with the largest $r_i$. Each figure shows all detected corners, the 500 strongest (piled into the tree canopies), and the 500 chosen by ANMS (spread over the whole photo).
 
 {{< include _figures/harris-set1.qmd >}}
 
