@@ -117,7 +117,7 @@ for key, (title, *_) in SETS.items():
     ]))
 write_figure("harris-set1", wide_figure(
     "outputs/set1_1_harris.png", "set1-harris",
-    "Set 1, left photo: all Harris corners, the 500 strongest, and the 500 chosen by ANMS"))
+    "Set 1, left photo: Harris corners above 0.01, the 500 strongest, and the 500 chosen by ANMS"))
 write_figure("descriptors-set1", wide_figure(
     "outputs/set1_2_descriptors.png", "set1-descriptors",
     "Set 1: 40×40 windows around eight ANMS corners (top) and their normalized 8×8 descriptors (bottom)"))
