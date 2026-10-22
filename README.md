@@ -27,9 +27,9 @@ feature matches, and automatic mosaics.
 
 ## Website
 
-The write-up is a Quarto site in `website/`, set up the same way as Project 3.
-After the notebook saves its results to `code/outputs/`, rebuild the figures
-and preview:
+The write-up is a Quarto site in `website/`, published at
+https://jiaweitang22.github.io/cs180-proj4/. After the notebooks save their
+results to `code/outputs/`, rebuild the figures and preview:
 
 ```bash
 .venv/bin/python website/scripts/build_figures.py
