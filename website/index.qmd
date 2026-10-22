@@ -112,11 +112,11 @@ I click the four corners of a rectangular object and map them to a rectangle wit
 
 | Image | Output size | Nearest neighbor | Bilinear |
 |---|---|---|---|
-| Poster frame | 1543 × 2084 | 0.25 s | 0.45 s |
-| Flyer | 2580 × 3386 | 0.65 s | 1.16 s |
-| Menu board | 1856 × 2284 | 0.35 s | 0.75 s |
+| Poster frame | 1543 × 2084 | 0.36 s | 0.49 s |
+| Flyer | 2580 × 3386 | 0.79 s | 1.20 s |
+| Menu board | 1856 × 2284 | 0.38 s | 0.81 s |
 
-Bilinear is about 2× slower, since it reads four pixels instead of one. Zoomed in, nearest neighbor gives jagged, blocky letter edges where the photo is enlarged, while bilinear stays smooth and only slightly softer. The quality is worth the cost, so I use bilinear for the mosaics.
+Bilinear is about 1.4–2× slower, since it reads four pixels instead of one. Zoomed in, nearest neighbor gives jagged, blocky letter edges where the photo is enlarged, while bilinear stays smooth and only slightly softer. The quality is worth the cost, so I use bilinear for the mosaics.
 
 {{< include _figures/zoom-rect1.qmd >}}
 
