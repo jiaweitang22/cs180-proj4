@@ -232,7 +232,7 @@ window.Quarto = {
 <h1>Part A: Image Warping and Mosaicing</h1>
 <section id="shooting" class="level2">
 <h2 class="anchored" data-anchor-id="shooting">A.1 Shooting the Pictures</h2>
-<p>Three pairs shot in Cupertino with the iPhone 17 Pro’s 1× camera. For each pair I kept the phone in place and only rotated it (about 17–19°), so the two photos share a center of projection and are related by a homography. The photos overlap by 64–69%.</p>
+<p>Three pairs shot in Cupertino with the iPhone 17 Pro’s 1× camera. For each pair I kept the phone in place and only rotated it (about 17–19°), so the two photos share a center of projection and are related by a homography. The photos overlap by 63–69%.</p>
 <p><strong>Set 1: Visitor Center sign</strong></p>
 <div class="result-grid cols-2">
 <figure class="figure">
@@ -618,7 +618,7 @@ Rectification 3: menu board: nearest neighbor (left) vs.&nbsp;bilinear (right), 
 <h2 class="anchored" data-anchor-id="mosaics">A.4 Blending into a Mosaic</h2>
 <ol type="1">
 <li>Keep the right photo fixed and warp the left photo into its frame, on a canvas that fits both.</li>
-<li>Give each image a weight that is 1 at its center and falls to 0 at its edges (a distance transform), warped along with the image.</li>
+<li>Give each image a weight that is 1 at its center and falls toward 0 at its edges (a distance transform), warped along with the image.</li>
 <li>Blend in two bands so that small misalignments don’t show up as doubled edges:
 <ul>
 <li><strong>Low band</strong> (Gaussian blur, <span class="math inline">\(\sigma = 8\)</span>): weighted average, so brightness changes fade across the overlap.</li>
